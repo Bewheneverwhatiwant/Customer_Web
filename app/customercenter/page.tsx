@@ -50,7 +50,7 @@ export default function CustomerCenter() {
 		setIsModalOpen(true);
 		setTab("list");
 
-		// ✅ mock 답변 자동 등록 (예: 3초 후 답변)
+		// mock 답변 자동 등록
 		setTimeout(() => {
 			setComplaints((prev) =>
 				prev.map((c) =>
@@ -71,7 +71,7 @@ export default function CustomerCenter() {
 	return (
 		<div className="max-w-3xl mx-auto p-6">
 			<h1 className="text-2xl font-semibold mb-2">TPT 서비스의 불편함 또는 문의사항을 알려주세요.</h1>
-			<p className="text-gray-600 mb-6">
+			<p className="text-gray-600 mt-6 mb-6">
 				항상 고객의 목소리에 귀 기울이는 TPT가 되겠습니다.
 			</p>
 

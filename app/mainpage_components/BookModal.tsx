@@ -71,8 +71,9 @@ export default function Reservation() {
 					<h3 className="text-2xl font-bold">상담 예약</h3>
 				</div>
 				<CustomDivider />
+
 				{/* 날짜 선택 */}
-				<h2 className="text-2xl mt-10 mb-2">1. 상담 날짜를 선택해주세요.</h2>
+				<h4 className="text-2xl mt-10 mb-2">1. 상담 날짜를 선택해주세요.</h4>
 				<div className="flex flex-col md:flex-row items-start gap-6 mb-6">
 					<div>
 						<Calendar
@@ -87,7 +88,7 @@ export default function Reservation() {
 					</div>
 					<div>
 						<p className="text-sm text-gray-600">선택하신 날짜:</p>
-						<p className="text-2xl">
+						<p className="text-lg">
 							{selectedDate ? formatDate(selectedDate) : "날짜를 선택해주세요."}
 						</p>
 					</div>
@@ -109,10 +110,10 @@ export default function Reservation() {
 							onClick={() => setSelectedTime(time)}
 							className={`rounded-md border-[0.5px] px-4 py-2 text-sm font-medium 
               ${!available
-									? "text-gray-400 bg-gray-50 cursor-not-allowed"
+									? "text-gray-400 bg-gray-300 cursor-not-allowed"
 									: selectedTime === time
 										? "bg-indigo-100 border-indigo-400 border-[0.5px] text-indigo-600 cursor-pointer"
-										: "hover:bg-gray-50 border-[0.5px] cursor-pointer"
+										: "border-[0.1px] border-gray-300 cursor-pointer"
 								}`}
 						>
 							{time < "12:00" ? `오전 ${time}` : `오후 ${time}`}

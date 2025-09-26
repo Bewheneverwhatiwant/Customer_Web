@@ -4,7 +4,7 @@
 // 2: [확인] 버튼 하나만 있고, 확인 버튼 클릭 시 닫힘
 // 3: [확인] [취소] 버튼 중 취소 버튼 클릭 시 닫힘 (확인 버튼에는 onClcik 함수 부여 가능)
 
-import React from 'react';
+import { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import clsx from 'clsx';
 
@@ -41,6 +41,7 @@ const CustomModal: React.FC<ModalProps> = ({
   onConfirm,
   children,
 }) => {
+
   if (!isOpen) return null;
 
   // 공통 스타일
@@ -57,7 +58,8 @@ const CustomModal: React.FC<ModalProps> = ({
     padding,
     margin,
     borderRadius,
-    "shadow-xl"
+    "shadow-xl",
+    "overflow-y-auto max-h-[calc(100vh-4rem)]"
   );
 
   // Variant 0: Overlay 클릭 시 닫히는 모달

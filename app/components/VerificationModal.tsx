@@ -74,7 +74,7 @@ export default function VerificationModal({
 
     try {
       const success = await onVerify(code);
-      
+
       if (success) {
         onClose();
       } else {
@@ -100,11 +100,11 @@ export default function VerificationModal({
   };
 
   return (
-    <CustomModal isOpen={isOpen} onClose={handleClose} variant={2}>
+    <CustomModal isOpen={isOpen} onClose={handleClose} variant={1} width="max-w-lg">
       <div className="p-6 max-w-sm mx-auto">
         <h2 className="text-xl font-semibold text-center mb-2">{title}</h2>
         <p className="text-gray-600 text-center mb-4">{description}</p>
-        
+
         {/* 타겟 정보 표시 */}
         <div className="text-center mb-4">
           <span className="text-sm text-gray-500">

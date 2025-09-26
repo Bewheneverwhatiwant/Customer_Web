@@ -12,7 +12,6 @@ interface CustomCalendarProps {
 
 export default function CustomCalendar({ value, onChange }: CustomCalendarProps) {
 	return (
-
 		<Calendar onChange={onChange} value={value} locale="ko-KR" />
 	);
 }

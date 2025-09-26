@@ -22,12 +22,28 @@ interface LoginRequest {
   rememberMe?: boolean;
 }
 
+// 서버가 내려주는 원본 응답 구조
+export interface ServerResponse<T> {
+  timestamp: string;
+  code: string;
+  message: string;
+  result: T;
+}
+
 interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   message?: string;
   error?: string;
 }
+
+// 아이디 찾기 응답에 맞는 result 타입
+export interface FindIdResult {
+  userName: string;
+}
+
+// 아이디 찾기에서 최종적으로 사용할 타입
+export type FindIdResponse = ApiResponse<FindIdResult>;
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_SERVER_URI;
 
@@ -70,12 +86,20 @@ class AuthAPI {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // 응답 Body가 있는지 확인
-      const text = await response.text();
-      const data = text ? JSON.parse(text) : {};
-      // console.log("⬅️ RESPONSE BODY:", data);
+      // // 응답 Body가 있는지 확인
+      // const text = await response.text();
+      // const data = text ? JSON.parse(text) : {};
+      // // console.log("⬅️ RESPONSE BODY:", data);
 
-      return { success: true, data };
+      // return { success: true, data };
+      const text = await response.text();
+      const raw: ServerResponse<T> = text ? JSON.parse(text) : null;
+
+      return {
+        success: true,
+        data: raw?.result,   // result만 꺼내서 ApiResponse.data에 넣기
+        message: raw?.message,
+      };
     } catch (error) {
       console.error('❌ API Error:', error);
       return {
@@ -146,6 +170,14 @@ class AuthAPI {
   // 사용자명 중복 확인
   async checkUsernameAvailability(username: string): Promise<ApiResponse> {
     return this.request(`/api/v1/auth/username/available?username=${encodeURIComponent(username)}`);
+  }
+
+  // 이메일로 아이디 찾기
+  async findIdByEmail(email: string): Promise<FindIdResponse> {
+    return this.request<FindIdResult>('/api/v1/auth/id/find', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
   }
 
   // 사용자 프로필 가져오기

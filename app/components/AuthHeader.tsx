@@ -55,7 +55,14 @@ export default function AuthHeader() {
             >
               <Menu size={24} className="text-gray-700" />
             </button>
-            <h1 className="text-xl font-semibold text-gray-300">TPT</h1>
+
+            <button
+              onClick={() => { router.push("/"); }}
+              aria-label="홈으로"
+              className="cursor-pointer"
+            >
+              <h1 className="text-xl font-semibold text-gray-300">TPT</h1>
+            </button>
           </div>
 
           {/* 사용자 메뉴 */}

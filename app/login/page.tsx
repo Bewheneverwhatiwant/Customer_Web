@@ -1,15 +1,17 @@
 "use client";
 import React, { useState } from "react";
 import Image from 'next/image';
+
 import { useAuthStore } from "../stores/authStore";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../hooks/useAuth";
+import { authAPI } from "../lib/api/auth";
+
 import CustomInputField from "../components/CustomInputField";
 import CustomButton from "../components/CustomButton";
-import { CustomLink } from "../components/CustomLink";
-import CustomModal from "../components/CustomModal";
-import AuthHeader from "../components/AuthHeader";
-import { useAuth } from "../hooks/useAuth";
 import CustomCheckBox from "../components/CustomCheckBox";
+import CustomModal from "../components/CustomModal";
+import { CustomLink } from "../components/CustomLink";
 
 export default function Login() {
 	const apiBaseUrl = process.env.NEXT_PUBLIC_SERVER_URI;
@@ -52,6 +54,29 @@ export default function Login() {
 		}
 	};
 
+	const [findIdModalOpen, setFindIdModalOpen] = useState(false);
+	const [findIdEmail, setFindIdEmail] = useState("");
+	const [foundId, setFoundId] = useState<string | null>(null);
+	const [loadingFindId, setLoadingFindId] = useState(false);
+
+	const handleFindId = async () => {
+		if (!findIdEmail) return;
+		try {
+			setLoadingFindId(true);
+			const res = await authAPI.findIdByEmail(findIdEmail);
+			if (res.success && res.data?.userName) {
+				setFoundId(`당신의 아이디는: ${res.data.userName}`);
+			} else {
+				setFoundId("해당 이메일로 등록된 아이디가 없습니다.");
+			}
+		} catch (err) {
+			setFoundId("아이디 찾기 중 오류가 발생했습니다.");
+		} finally {
+			setLoadingFindId(false);
+		}
+	};
+
+
 
 	const handleKakaoLogin = () => {
 		window.location.href = kakaoLoginUrl;
@@ -70,14 +95,14 @@ export default function Login() {
 	return (
 		<div className="w-full min-h-screen bg-gray-100">
 			<main id="main-content" className="pt-16 w-full h-screen flex items-center justify-center bg-gray-100">
-				<form className="w-full w-md p-6 bg-white shadow-md rounded-md flex flex-col gap-20" onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
+				<form className="w-md p-6 bg-white shadow-md rounded-md flex flex-col gap-20" onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
 					<div className="w-full flex flex-col gap-10 items-center">
 						{/* <h1 className="text-xl font-semibold text-center text-gray-900">로그인</h1> */}
 						<div className="w-full flex justify-center items-center">
 							<Image
-								src="/images/logo_loginpage.svg"
+								src="/images/logo_main.png"
 								alt="logo"
-								width={120}
+								width={60}
 								height={60}
 								priority
 							/>
@@ -121,12 +146,20 @@ export default function Login() {
 						</div>
 
 						<div className="flex justify-center gap-4 text-sm">
-							<CustomLink href="/find-id" variant="primary" fontSize="font-xs">
+							<button
+								type="button"
+								onClick={() => setFindIdModalOpen(true)}
+								className="text-blue-600 cursor-pointer underline"
+							>
 								아이디 찾기
-							</CustomLink>
-							<CustomLink href="/find-password" variant="primary" fontSize="font-xs">
+							</button>
+							<button
+								type="button"
+								onClick={() => setFindIdModalOpen(true)}
+								className="text-blue-600 cursor-pointer underline"
+							>
 								비밀번호 찾기
-							</CustomLink>
+							</button>
 						</div>
 
 						<div className="flex flex-col w-full items-center gap-2">
@@ -180,6 +213,49 @@ export default function Login() {
 								<h3 className="text-lg font-semibold mb-2">알림</h3>
 								{/* <p className="text-gray-700 mb-4">{error}</p> */}
 								<p className="text-gray-700 mb-4">아이디 또는 비밀번호가 일치하지 않습니다.</p>
+							</div>
+						</CustomModal>
+					)}
+
+					{/* 아이디 찾기 모달 */}
+					{findIdModalOpen && (
+						<CustomModal
+							isOpen={findIdModalOpen}
+							onClose={() => {
+								setFindIdModalOpen(false);
+								setFindIdEmail("");
+								setFoundId(null);
+							}}
+							variant={1}
+							width="w-lg"
+						>
+							<div className="p-6 flex flex-col gap-4">
+
+								<CustomInputField
+									variant={0}
+									id="findIdEmail"
+									label="이메일"
+									placeholder="가입 시 등록한 이메일을 입력하세요"
+									value={findIdEmail}
+									onChange={setFindIdEmail}
+									type="email"
+									required
+								/>
+
+								<CustomButton
+									variant="prettyFull"
+									onClick={handleFindId}
+									disabled={loadingFindId}
+									width="w-full"
+								>
+									{loadingFindId ? "조회 중..." : "아이디 찾기"}
+								</CustomButton>
+
+								{foundId && (
+									<p className="text-center text-gray-700 mt-2">
+										{foundId}
+									</p>
+								)}
 							</div>
 						</CustomModal>
 					)}

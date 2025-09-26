@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 type DropdownButtonProps = {
   options: string[];               // 드롭다운 목록
@@ -29,16 +30,20 @@ export const CustomDropdownButton: React.FC<DropdownButtonProps> = ({
       {/* 드롭다운 버튼 */}
       <button
         onClick={handleToggleDropdown}
-        className="flex items-center justify-between px-4 py-2 border rounded-md bg-white text-gray-700
+        className="flex items-center justify-between px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-700 text-xs
         shadow-sm w-full focus:outline-none cursor-pointer"
       >
-        <span className="mr-2">{isOpen ? '↑' : '↓'}</span>
+        {isOpen ? (
+          <ChevronUp size={18} className="mr-2 text-gray-500" />
+        ) : (
+          <ChevronDown size={18} className="mr-2 text-gray-500" />
+        )}
         <span>{selectedValue}</span> {/* 기본값 텍스트 */}
       </button>
 
       {/* 드롭다운 목록 */}
       {isOpen && (
-        <div className="absolute left-0 w-full mt-2 bg-white border rounded-md shadow-lg z-10">
+        <div className="absolute left-0 w-full mt-2 bg-white border border-gray-300 rounded-md shadow-lg z-10">
           <ul className="divide-y divide-gray-100">
             {options.map((option, index) => (
               <li

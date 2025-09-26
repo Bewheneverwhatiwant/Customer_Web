@@ -1,10 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React from "react";
+import { useState } from "react";
+import Reservation from "./BookModal";
+import CustomModal from "../components/CustomModal";
 
 const MainToast = () => {
 	const router = useRouter();
+	const [isReservationOpen, setIsReservationOpen] = useState(false);
 
 	const handleClick = () => {
 		router.push("/reservation");
@@ -19,11 +22,20 @@ const MainToast = () => {
 
 			{/* 버튼 */}
 			<button
-				onClick={handleClick}
+				onClick={() => setIsReservationOpen(true)}
 				className="bg-[#EF5555] text-white font-semibold px-4 py-2 md:px-6 md:py-2 rounded-md cursor-pointer w-full md:w-auto"
 			>
 				상담 신청
 			</button>
+
+			<CustomModal
+				variant={0}
+				isOpen={isReservationOpen}
+				onClose={() => setIsReservationOpen(false)}
+				width="max-w-3xl"
+			>
+				<Reservation />
+			</CustomModal>
 		</div>
 	);
 };

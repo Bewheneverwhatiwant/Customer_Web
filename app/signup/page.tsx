@@ -309,9 +309,9 @@ export default function Signup() {
 			<div className="pt-16 w-full flex align-top gap-2 p-1">
 				<div className="w-full h-screen flex flex-1 flex-col justify-start items-center p-1 pb-5">
 					<Image
-						src="/images/logo_signuppage.svg"
+						src="/images/logo_main.png"
 						alt="logo"
-						width={400}
+						width={200}
 						height={200}
 						priority
 					/>
@@ -503,6 +503,7 @@ export default function Signup() {
 							isOpen={showErrorModal}
 							onClose={() => setShowErrorModal(false)}
 							variant={1}
+							width="max-w-lg"
 						>
 							<div className="p-4 text-center">
 								<h3 className="text-lg font-semibold mb-2">알림</h3>
