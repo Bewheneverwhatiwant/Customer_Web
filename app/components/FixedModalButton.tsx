@@ -30,8 +30,8 @@ export const FixedModalButton: React.FC<FixedModalButtonProps> = ({
             {/* 드롭다운 버튼 */}
             <button
                 onClick={handleToggleDropdown}
-                className="flex items-center justify-between px-4 py-2 border rounded-md bg-white text-gray-700
-                shadow-sm w-full focus:outline-none cursor-pointer"
+                className="flex items-center justify-between px-2 py-1 border rounded-md bg-white text-gray-700
+                text-sm shadow-sm w-full focus:outline-none cursor-pointer"
             >
                 {/* <span className="mr-2">{isOpen ? '↑' : '↓'}</span> */}
                 <span>{selectedValue}</span> {/* 기본값 텍스트 */}
@@ -43,7 +43,8 @@ export const FixedModalButton: React.FC<FixedModalButtonProps> = ({
                     {/* <ul className="divide-y divide-gray-100"> */}
                     {options.map((option, index) => (
                         <CustomButton
-                            variant='normalFull'
+                            // variant='normalFull'
+                            className='bg-[#273042] text-white rounded-sm p-2'
                             key={index}
                             onClick={() => handleSelect(option)}
                         >
