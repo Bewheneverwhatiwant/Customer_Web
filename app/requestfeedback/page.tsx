@@ -6,16 +6,46 @@ import SwingAfterForm from "./forms/SwingAfterForm";
 import DayAfterForm from "./forms/DayAfterForm";
 import ScalpingAfterForm from "./forms/ScalpingAfterForm";
 import { mockUsers } from "../mocks/user";
+import { useAuth } from "../hooks/useAuth";
+import { mapSwingFormData, mapDayFormData, mapScalpingFormData } from "../utils/feedbackFormMapper";
 
 export default function RequestFeedback() {
 	// 현재 로그인된 사용자
 	// 0 - 무료, 1 - 스윙, 2 - 데이, 3 - 스켈핑 
 	const currentUser = mockUsers[3];
+	const { requestSwingFeedback, requestDayFeedback, requestScalpingFeedback } = useAuth();
 
 	const { investmentType, completion } = currentUser;
 
-	const handleSubmit = (formData: any) => {
+	const handleSubmit = async (formData: any) => {
 		console.log("서버로 전송할 데이터:", formData);
+
+		try {
+			let fd: FormData;
+			let res;
+
+			if (investmentType === "스윙") {
+				fd = mapSwingFormData(formData);
+				console.log("정제된 데이터는 (entries):");
+				fd.forEach((value, key) => console.log(key, value));
+				res = await requestSwingFeedback(fd);
+			} else if (investmentType === "데이") {
+				fd = mapDayFormData(formData);
+				console.log("정제된 데이터는 (entries):");
+				fd.forEach((value, key) => console.log(key, value));
+				res = await requestDayFeedback(fd);
+			} else if (investmentType === "스켈핑") {
+				fd = mapScalpingFormData(formData);
+				console.log("정제된 데이터는 (entries):");
+				fd.forEach((value, key) => console.log(key, value));
+				res = await requestScalpingFeedback(fd);
+			}
+
+			console.log("서버 응답:", res);
+		} catch (error) {
+			console.error("피드백 요청 예외 발생:", error);
+			alert("네트워크 오류가 발생했습니다.");
+		}
 	};
 
 	const renderForm = () => {

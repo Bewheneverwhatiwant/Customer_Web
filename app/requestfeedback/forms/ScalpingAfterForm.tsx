@@ -15,38 +15,41 @@ export default function ScalpingAfterForm({ onSubmit, currentUser, riskTaking = 
 
 	const handleWeekChange = (data: { month: number; week: number }) => {
 		console.log("현재 선택된 값:", data);
-		// TODO: 필요하면 form 데이터에 포함해서 서버 전송
 	};
 
-	const [screenshot, setScreenshot] = useState<string | null>(null);
-	const [position, setPosition] = useState<"Long" | "Short" | null>(null);
-	const [isPositive, setIsPositive] = useState(true);
-	const [pl, setPl] = useState<number>(0); // P&L 입력값 (퍼센트)
-	const [rr, setRr] = useState<number>(0); // R&R 값
+	// ---- 상태 관리 ----
+	const [screenshot, setScreenshot] = useState<File | null>(null);
+	const [screenshotPreview, setScreenshotPreview] = useState<string | null>(null);
 
+	const [position, setPosition] = useState<"LONG" | "SHORT" | null>(null);
+	const [isPositive, setIsPositive] = useState(true);
+	const [pl, setPl] = useState<number>(0);
+	const [rr, setRr] = useState<number>(0);
+
+	const [symbol, setSymbol] = useState("");
+	const [dailyTradingCount, setDailyTradingCount] = useState<number>(0);
+	const [risk, setRisk] = useState<number>(riskTaking);
+	const [leverage, setLeverage] = useState<number>(1);
+	const [totalPositions, setTotalPositions] = useState<number>(0);
+	const [totalProfitTrades, setTotalProfitTrades] = useState<number>(0);
+	const [trendAnalysis, setTrendAnalysis] = useState("");
+	const [trainerFeedback, setTrainerFeedback] = useState("");
+
+	// ---- RR 계산 ----
 	useEffect(() => {
 		if (pl !== 0) {
-			setRr(Number((riskTaking / Math.abs(pl)).toFixed(2)));
+			setRr(Number((risk / Math.abs(pl)).toFixed(2)));
 		} else {
 			setRr(0);
 		}
-	}, [pl, riskTaking]);
+	}, [pl, risk]);
 
-	// 게이지 범위: -3 ~ +3
-	const gaugeMin = -3;
-	const gaugeMax = 3;
-	const normalized = Math.min(Math.max(pl / riskTaking, gaugeMin), gaugeMax);
-
-	// 화살표 색상 조건
-	let arrowColor = "text-gray-500";
-	if (normalized <= -2) arrowColor = "text-red-500";
-	else if (normalized >= 2) arrowColor = "text-green-600";
-
+	// ---- 파일 업로드 ----
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files[0]) {
 			const file = e.target.files[0];
-			const imageUrl = URL.createObjectURL(file);
-			setScreenshot(imageUrl);
+			setScreenshot(file);
+			setScreenshotPreview(URL.createObjectURL(file));
 		}
 	};
 
@@ -54,37 +57,44 @@ export default function ScalpingAfterForm({ onSubmit, currentUser, riskTaking = 
 		document.getElementById("screenshotInput")?.click();
 	};
 
+	// ---- 제출 ----
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		const formData = {
-			screenshot,
+			symbol,
+			dailyTradingCount,
+			risk,
+			leverage,
+			totalPositions,
+			totalProfitTrades,
+			trendAnalysis,
+			trainerFeedback,
+			screenshot, // 실제 파일
 			position,
 			pl: isPositive ? pl : -pl,
 			rr,
+			requestDate: new Date().toISOString().split("T")[0], // 기록 날짜
 		};
 		onSubmit(formData);
 	};
 
 	return (
 		<form onSubmit={handleSubmit} className="flex flex-col gap-5 text-left">
-
-			{/* 상단: 투자유형, 완강여부, (스윙일 때 주차 선택) */}
+			{/* 상단: 투자유형, 완강여부 */}
 			<div className="flex items-center gap-3 mb-6">
 				<span
 					className={`px-3 py-1 text-white rounded
-    ${investmentType === "스윙" ? "bg-orange-400" : ""}
-    ${investmentType === "데이" ? "bg-green-400" : ""}
-    ${investmentType === "스켈핑" ? "bg-sky-400" : ""}`}
+            ${investmentType === "스윙" ? "bg-orange-400" : ""}
+            ${investmentType === "데이" ? "bg-green-400" : ""}
+            ${investmentType === "스켈핑" ? "bg-sky-400" : ""}`}
 				>
 					{investmentType}
 				</span>
 				<span className="px-3 py-1 border rounded">{completion}</span>
-
-				{investmentType === "스윙" && (
-					<WeekSelector onChange={handleWeekChange} />
-				)}
+				{investmentType === "스윙" && <WeekSelector onChange={handleWeekChange} />}
 			</div>
 
+			{/* 기록 날짜 */}
 			<div>
 				<label className="block mb-1 font-medium">기록 날짜</label>
 				<input
@@ -100,15 +110,20 @@ export default function ScalpingAfterForm({ onSubmit, currentUser, riskTaking = 
 				<label className="block mb-1 font-medium">종목</label>
 				<input
 					type="text"
+					value={symbol}
+					onChange={(e) => setSymbol(e.target.value)}
 					placeholder="투자 종목을 입력하세요."
 					className="bg-[#F4F4F4] rounded p-2 w-full"
 				/>
 			</div>
 
+			{/* 하루 매매 횟수 */}
 			<div>
 				<label className="block mb-1 font-medium">하루 매매 횟수</label>
 				<input
-					type="text"
+					type="number"
+					value={dailyTradingCount}
+					onChange={(e) => setDailyTradingCount(Number(e.target.value))}
 					placeholder="내용 입력"
 					className="bg-[#F4F4F4] rounded p-2 w-full"
 				/>
@@ -121,9 +136,9 @@ export default function ScalpingAfterForm({ onSubmit, currentUser, riskTaking = 
 					className="w-full h-40 rounded bg-[#F4F4F4] flex items-center justify-center cursor-pointer overflow-hidden"
 					onClick={handleUploadClick}
 				>
-					{screenshot ? (
+					{screenshotPreview ? (
 						<img
-							src={screenshot}
+							src={screenshotPreview}
 							alt="screenshot preview"
 							className="object-contain w-full h-full"
 						/>
@@ -141,40 +156,73 @@ export default function ScalpingAfterForm({ onSubmit, currentUser, riskTaking = 
 			</div>
 
 			{/* 리스크 테이킹 */}
-			<div className="flex-1">
+			<div>
 				<label className="block mb-1 font-medium">리스크 테이킹 (%)</label>
-				<input type="number" className="bg-[#F4F4F4] rounded p-2 w-full" />
+				<input
+					type="number"
+					value={risk}
+					onChange={(e) => setRisk(Number(e.target.value))}
+					className="bg-[#F4F4F4] rounded p-2 w-full"
+				/>
 			</div>
 
-			<div className="flex-1">
+			{/* 레버리지 */}
+			<div>
 				<label className="block mb-1 font-medium">레버리지 (배)</label>
-				<input type="number" className="bg-[#F4F4F4] rounded p-2 w-full" />
+				<input
+					type="number"
+					value={leverage}
+					onChange={(e) => setLeverage(Number(e.target.value))}
+					className="bg-[#F4F4F4] rounded p-2 w-full"
+				/>
 			</div>
 
-			<div className="flex-1">
+			{/* 총 포지션 횟수 */}
+			<div>
 				<label className="block mb-1 font-medium">총 포지션 잡은 횟수</label>
-				<input type="number" className="bg-[#F4F4F4] rounded p-2 w-full" />
+				<input
+					type="number"
+					value={totalPositions}
+					onChange={(e) => setTotalPositions(Number(e.target.value))}
+					className="bg-[#F4F4F4] rounded p-2 w-full"
+				/>
 			</div>
 
-			<div className="flex-1">
+			{/* 총 매매 대비 수익 매매 */}
+			<div>
 				<label className="block mb-1 font-medium">총 매매횟수 대비 수익 매매횟수</label>
-				<input type="number" className="bg-[#F4F4F4] rounded p-2 w-full" />
+				<input
+					type="number"
+					value={totalProfitTrades}
+					onChange={(e) => setTotalProfitTrades(Number(e.target.value))}
+					className="bg-[#F4F4F4] rounded p-2 w-full"
+				/>
 			</div>
 
-			{/* 근거 및 복기 */}
+			{/* 추세 분석 */}
 			<div>
 				<label className="block mb-1 font-medium">15분봉 기준 추세 분석</label>
-				<textarea className="bg-[#F4F4F4] rounded p-2 w-full h-24" />
+				<textarea
+					value={trendAnalysis}
+					onChange={(e) => setTrendAnalysis(e.target.value)}
+					className="bg-[#F4F4F4] rounded p-2 w-full h-24"
+				/>
 			</div>
+
+			{/* 트레이너 피드백 */}
 			<div>
 				<label className="block mb-1 font-medium">담당 트레이너 피드백 요청 사항</label>
-				<textarea className="bg-[#F4F4F4] rounded p-2 w-full h-24" />
+				<textarea
+					value={trainerFeedback}
+					onChange={(e) => setTrainerFeedback(e.target.value)}
+					className="bg-[#F4F4F4] rounded p-2 w-full h-24"
+				/>
 			</div>
 
 			{/* 제출 */}
 			<button
 				type="submit"
-				className="bg-gradient-to-r from-[#D2C693] to-[#928346] text-white py-3 rounded mb-20"
+				className="bg-gradient-to-r from-[#D2C693] to-[#928346] text-white py-3 rounded mb-20 cursor-pointer"
 			>
 				매매일지 기록하기
 			</button>

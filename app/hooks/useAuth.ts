@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, createContext, useContext } from 'react';
-import { authAPI } from '../lib/api/auth';
+import { ApiResponse, authAPI } from '../lib/api/auth';
 
 export interface User {
   id: string;
@@ -26,6 +26,12 @@ export interface AuthContextType {
   ) => Promise<{ success: boolean; error?: string }>;
 
   logout: () => void;
+
+  myInfo: () => Promise<any>;
+
+  requestSwingFeedback: (data: any) => Promise<ApiResponse>;
+  requestDayFeedback: (data: any) => Promise<ApiResponse>;
+  requestScalpingFeedback: (data: any) => Promise<ApiResponse>;
 }
 
 
@@ -113,12 +119,67 @@ export const useAuth = (): AuthContextType => {
     localStorage.removeItem('auth_token');
   };
 
+  const myInfo = async () => {
+    setIsLoading(true);
+    try {
+      const res = await authAPI.getUserProfile();
+      console.log("내 정보 조회 성공:", res);
+      return res;
+    } catch (error) {
+      console.error("내 정보 조회 실패:", error);
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const requestSwingFeedback = async (data: any) => {
+    setIsLoading(true);
+    try {
+      return await authAPI.requestSwingFeedback(data);
+    } catch (error) {
+      console.error("스윙 피드백 요청 실패:", error);
+      return { success: false, error: "스윙 피드백 요청 중 오류 발생" };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const requestDayFeedback = async (data: any) => {
+    setIsLoading(true);
+    try {
+      return await authAPI.requestDayFeedback(data);
+    } catch (error) {
+      console.error("데이 피드백 요청 실패:", error);
+      return { success: false, error: "데이 피드백 요청 중 오류 발생" };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const requestScalpingFeedback = async (data: any) => {
+    setIsLoading(true);
+    try {
+      return await authAPI.requestScalpingFeedback(data);
+    } catch (error) {
+      console.error("스켈핑 피드백 요청 실패:", error);
+      return { success: false, error: "스켈핑 피드백 요청 중 오류 발생" };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
   return {
     user,
     isAuthenticated: !!user,
     isLoading,
     login,
     signup,
-    logout
+    logout,
+    myInfo,
+    requestSwingFeedback,
+    requestDayFeedback,
+    requestScalpingFeedback
   };
 };

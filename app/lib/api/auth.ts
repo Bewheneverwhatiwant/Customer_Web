@@ -59,12 +59,24 @@ class AuthAPI {
         return match ? decodeURIComponent(match[2]) : null;
       };
       const xsrfToken = getCookie("XSRF-TOKEN");
+      console.log("📌 쿠키에서 가져온 XSRF-TOKEN:", xsrfToken);
 
-      const finalHeaders = {
-        'Content-Type': 'application/json',
+      // const finalHeaders = {
+      //   'Content-Type': 'application/json',
+      //   ...(xsrfToken ? { 'X-XSRF-TOKEN': xsrfToken } : {}),
+      //   ...options.headers,
+      // };
+
+      const isFormData = options.body instanceof FormData;
+
+      const finalHeaders: HeadersInit = {
         ...(xsrfToken ? { 'X-XSRF-TOKEN': xsrfToken } : {}),
-        ...options.headers,
+        ...(options.headers || {}),
       };
+
+      if (!isFormData) {
+        (finalHeaders as Record<string, string>)["Content-Type"] = "application/json";
+      }
 
       console.log("📡 [REQUEST DEBUG]");
       console.log("➡️ URL:", `${API_BASE_URL}${endpoint}`);
@@ -181,12 +193,8 @@ class AuthAPI {
   }
 
   // 사용자 프로필 가져오기
-  async getUserProfile(token: string): Promise<ApiResponse> {
-    return this.request('/me', {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
+  async getUserProfile(): Promise<ApiResponse> {
+    return this.request('/api/v1/auth/me');
   }
 
   // 소셜 로그인 기본 정보 가져오기
@@ -201,7 +209,119 @@ class AuthAPI {
       method: "GET",
     });
   }
+
+  // 스윙 피드백 요청
+  async requestSwingFeedback(data: SwingFeedbackRequest): Promise<ApiResponse> {
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      formData.append(key, value as any);
+    });
+
+    return this.request("/api/v1/feedback-requests/swing", {
+      method: "POST",
+      body: formData,
+    });
+  }
+
+  // 데이 피드백 요청
+  async requestDayFeedback(data: DayFeedbackRequest): Promise<ApiResponse> {
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      formData.append(key, value as any);
+    });
+
+    return this.request("/api/v1/feedback-requests/day", {
+      method: "POST",
+      body: formData,
+    });
+  }
+
+  // 스켈핑 피드백 요청
+  async requestScalpingFeedback(data: ScalpingFeedbackRequest): Promise<ApiResponse> {
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      formData.append(key, value as any);
+    });
+
+    return this.request("/api/v1/feedback-requests/scalping", {
+      method: "POST",
+      body: formData,
+    });
+  }
 }
 
 export const authAPI = new AuthAPI();
 export type { SignupRequest, LoginRequest, ApiResponse };
+
+// 피드백 요청 관련 타입
+export interface SwingFeedbackRequest {
+  positionEndDate: string;
+  feedbackYear: number;
+  trainerFeedbackRequestContent: string;
+  positionStartDate: string;
+  positionHoldingTime: string;
+  position: string;
+  winLossRatio: string;
+  subFrame: string;
+  courseStatus: string;
+  directionFrame: string;
+  membershipLevel: string;
+  pnl: number;
+  screenshotFiles: File | string; // string은 mock 테스트용
+  riskTaking: number;
+  entryPoint1: string;
+  preCourseFeedbackDetail: string; // JSON string
+  mainFrame: string;
+  entryPoint2: string;
+  leverage: number;
+  entryPoint3: string;
+  grade: string;
+  feedbackWeek: number;
+  trendAnalysis: string;
+  tradingReview: string;
+  feedbackMonth: number;
+  requestDate: string;
+  category: string;
+}
+
+export interface DayFeedbackRequest {
+  trainerFeedbackRequestContent: string;
+  positionHoldingTime: string;
+  position: string;
+  directionFrameExists: boolean;
+  winLossRatio: string;
+  subFrame: string;
+  courseStatus: string;
+  directionFrame: string;
+  membershipLevel: string;
+  pnl: number;
+  screenshotFiles: File | string;
+  riskTaking: number;
+  entryPoint1: string;
+  preCourseFeedbackDetail: string;
+  mainFrame: string;
+  entryPoint2: string;
+  leverage: number;
+  grade: string;
+  trendAnalysis: string;
+  tradingReview: string;
+  requestDate: string;
+  category: string;
+}
+
+export interface ScalpingFeedbackRequest {
+  trainerFeedbackRequestContent: string;
+  dailyTradingCount: number;
+  positionHoldingTime: string;
+  courseStatus: string;
+  membershipLevel: string;
+  screenshotFiles: File | string;
+  riskTaking: number;
+  preCourseFeedbackDetail: string;
+  leverage: number;
+  totalProfitMarginPerTrades: number;
+  trendAnalysis: string;
+  requestDate: string;
+  category: string;
+  totalPositionTakingCount: number;
+}
