@@ -1,16 +1,33 @@
 "use client";
 
 import TimeFeedback from "./TimeFeedback";
+import BasicOrBeforeView from "./forms/BasicOrBeforeView";
+import DayAfterView from "./forms/DayAfterView";
+import SwingAfterView from "./forms/SwingAfterForm";
+import ScalpingAfterView from "./forms/ScalpingAfterView";
+
+type TradeType = "SWING" | "DAY" | "SCALPING" | "BASIC";
 
 export default function Page() {
+	const Type: TradeType = "SWING"; // Type 은 유니온 타입 중 하나
+
 	return (
-		<TimeFeedback
-			year="2025"
-			month="8"
-			week="셋째 주"
-			day="24"
-			time="23:35:59"
-			title="8/24 (1) 작성 완료"
-		/>
+		<div>
+			<TimeFeedback
+				year="2025"
+				month="8"
+				week="셋째 주"
+				day="24"
+				time="23:35:59"
+				title="8/24 (1) 작성 완료"
+			/>
+
+			{Type === "SWING" && <SwingAfterView />}
+			{Type === "DAY" && <DayAfterView />}
+			{Type === "SCALPING" && <ScalpingAfterView />}
+			{Type === "BASIC" && <BasicOrBeforeView />}
+		</div>
 	);
 }
+
+
