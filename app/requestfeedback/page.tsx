@@ -10,7 +10,7 @@ import { mockUsers } from "../mocks/user";
 export default function RequestFeedback() {
 	// 현재 로그인된 사용자
 	// 0 - 무료, 1 - 스윙, 2 - 데이, 3 - 스켈핑 
-	const currentUser = mockUsers[1];
+	const currentUser = mockUsers[3];
 
 	const { investmentType, completion } = currentUser;
 

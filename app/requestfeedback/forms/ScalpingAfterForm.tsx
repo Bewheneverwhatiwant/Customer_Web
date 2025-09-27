@@ -105,9 +105,8 @@ export default function ScalpingAfterForm({ onSubmit, currentUser, riskTaking = 
 				/>
 			</div>
 
-			{/* 포지션 홀딩 시간 */}
 			<div>
-				<label className="block mb-1 font-medium">포지션 홀딩 시간</label>
+				<label className="block mb-1 font-medium">하루 매매 횟수</label>
 				<input
 					type="text"
 					placeholder="내용 입력"
@@ -141,136 +140,34 @@ export default function ScalpingAfterForm({ onSubmit, currentUser, riskTaking = 
 				/>
 			</div>
 
-			{/* 포지션 */}
-			<div className="flex gap-3">
-				<button
-					type="button"
-					onClick={() => setPosition("Long")}
-					className={`px-4 py-2 cursor-pointer rounded ${position === "Long" ? "bg-[#273042] text-white" : "bg-[#F4F4F4] text-black"
-						}`}
-				>
-					Long
-				</button>
-				<button
-					type="button"
-					onClick={() => setPosition("Short")}
-					className={`px-4 py-2 cursor-pointer rounded ${position === "Short" ? "bg-[#273042] text-white" : "bg-[#F4F4F4] text-black"
-						}`}
-				>
-					Short
-				</button>
-			</div>
-
-			{/* 비중 */}
-			<div className="flex-1">
-				<label className="block mb-1 font-medium">비중 (운용 자금 대비)</label>
-				<input type="number" className="bg-[#F4F4F4] rounded p-2 w-full" />
-			</div>
-
-			{/* Entry / Exit */}
-			<div className="flex gap-4">
-				<div className="flex-1">
-					<label className="block mb-1 font-medium">Entry Price</label>
-					<input type="number" className="bg-[#F4F4F4] rounded p-2 w-full" />
-				</div>
-				<div className="flex-1">
-					<label className="block mb-1 font-medium">Exit Price</label>
-					<input type="number" className="bg-[#F4F4F4] rounded p-2 w-full" />
-				</div>
-			</div>
-
 			{/* 리스크 테이킹 */}
 			<div className="flex-1">
 				<label className="block mb-1 font-medium">리스크 테이킹 (%)</label>
 				<input type="number" className="bg-[#F4F4F4] rounded p-2 w-full" />
 			</div>
 
-			{/* 손절/익절 */}
-			<div className="flex gap-4">
-				<div className="flex-1">
-					<label className="block mb-1 font-medium">설정 손절가</label>
-					<input type="number" className="bg-[#F4F4F4] rounded p-2 w-full" />
-				</div>
-				<div className="flex-1">
-					<label className="block mb-1 font-medium">설정 익절가</label>
-					<input type="number" className="bg-[#F4F4F4] rounded p-2 w-full" />
-				</div>
+			<div className="flex-1">
+				<label className="block mb-1 font-medium">레버리지 (배)</label>
+				<input type="number" className="bg-[#F4F4F4] rounded p-2 w-full" />
 			</div>
 
-			{/* P&L / R&R / 게이지 */}
-			<div className="flex flex-col gap-6">
-				{/* P&L */}
-				<div className="flex items-center gap-3">
-					<span className="font-semibold">P&amp;L:</span>
-					<div className="flex gap-2">
-						<button
-							type="button"
-							className={`px-3 py-1 border rounded ${isPositive ? "bg-green-500 text-white" : "bg-white text-green-500 border-green-500"
-								}`}
-							onClick={() => setIsPositive(true)}
-						>
-							+
-						</button>
-						<button
-							type="button"
-							className={`px-3 py-1 border rounded ${!isPositive ? "bg-red-500 text-white" : "bg-white text-red-500 border-red-500"
-								}`}
-							onClick={() => setIsPositive(false)}
-						>
-							-
-						</button>
-					</div>
-					<input
-						type="number"
-						value={pl}
-						onChange={(e) => setPl(Number(e.target.value))}
-						className="w-20 border rounded p-1 text-center"
-					/>
-					<span>%</span>
-				</div>
+			<div className="flex-1">
+				<label className="block mb-1 font-medium">총 포지션 잡은 횟수</label>
+				<input type="number" className="bg-[#F4F4F4] rounded p-2 w-full" />
+			</div>
 
-				{/* R&R */}
-				<div className="flex items-center gap-3">
-					<span className="font-semibold">R&amp;R:</span>
-					<span>{rr}</span>
-				</div>
-
-				{/* 게이지 */}
-				<div className="relative w-full h-20">
-					<div className="absolute top-1/2 w-full border-t border-gray-300" />
-					<div className="flex justify-between text-xs text-gray-500 mt-6">
-						{Array.from({ length: gaugeMax - gaugeMin + 1 }, (_, i) => (
-							<span key={i}>{gaugeMin + i}</span>
-						))}
-					</div>
-
-					{/* 화살표 */}
-					<div
-						className={`absolute top-2 ${arrowColor}`}
-						style={{
-							left: `${((normalized - gaugeMin) / (gaugeMax - gaugeMin)) * 100}%`,
-							transform: "translateX(-50%)",
-						}}
-					>
-						▼
-					</div>
-
-					{/* Fail */}
-					<span className="absolute left-0 top-0 text-red-500 font-semibold">Fail</span>
-				</div>
+			<div className="flex-1">
+				<label className="block mb-1 font-medium">총 매매횟수 대비 수익 매매횟수</label>
+				<input type="number" className="bg-[#F4F4F4] rounded p-2 w-full" />
 			</div>
 
 			{/* 근거 및 복기 */}
 			<div>
-				<label className="block mb-1 font-medium">포지션 진입 근거</label>
+				<label className="block mb-1 font-medium">15분봉 기준 추세 분석</label>
 				<textarea className="bg-[#F4F4F4] rounded p-2 w-full h-24" />
 			</div>
 			<div>
-				<label className="block mb-1 font-medium">포지션 탈출 근거</label>
-				<textarea className="bg-[#F4F4F4] rounded p-2 w-full h-24" />
-			</div>
-			<div>
-				<label className="block mb-1 font-medium">최종 복기</label>
+				<label className="block mb-1 font-medium">담당 트레이너 피드백 요청 사항</label>
 				<textarea className="bg-[#F4F4F4] rounded p-2 w-full h-24" />
 			</div>
 

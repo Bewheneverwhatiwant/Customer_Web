@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react";
 import { User } from "@/app/types/user";
 import WeekSelector from "../WeekSelector";
+import { FixedModalButton } from "@/app/components/FixedModalButton";
+import CustomDivider from "@/app/components/CustomDivider";
+import EntryTable from "../EntryTable";
 
 type Props = {
 	onSubmit: (data: any) => void;
@@ -12,14 +15,44 @@ type Props = {
 
 export default function DayAfterForm({ onSubmit, currentUser, riskTaking = 5 }: Props) {
 	const { investmentType, completion } = currentUser;
+	const [selectedOption, setSelectedOption] = useState<string>('');
+
+	// 진입타점 표 컴포넌트 관리용
+	const [isOpen, setIsOpen] = useState(false);
+	const [isOpen2, setIsOpen2] = useState(false);
+	const [isOpen3, setIsOpen3] = useState(false);
+	const [selected, setSelected] = useState<{ target: string; grade: string } | null>(null);
+	const [selected2, setSelected2] = useState<{ target: string; grade: string } | null>(null);
+	const [selected3, setSelected3] = useState<{ target: string; grade: string } | null>(null);
+
+	// 진입타점 표 컴포넌트 관리용 
+	const handleSelect1 = (data: { target: string; grade: string }) => {
+		setSelected(data);
+		setIsOpen(false);
+	};
+
+	const handleSelect2 = (data: { target: string; grade: string }) => {
+		setSelected2(data);
+		setIsOpen2(false);
+	};
+
+	const handleSelect3 = (data: { target: string; grade: string }) => {
+		setSelected3(data);
+		setIsOpen3(false);
+	};
 
 	const handleWeekChange = (data: { month: number; week: number }) => {
 		console.log("현재 선택된 값:", data);
 		// TODO: 필요하면 form 데이터에 포함해서 서버 전송
 	};
 
+	const handleSelectOption = (selectedValue: string) => {
+		setSelectedOption(selectedValue);  // 선택된 값 업데이트
+	};
+
 	const [screenshot, setScreenshot] = useState<string | null>(null);
 	const [position, setPosition] = useState<"Long" | "Short" | null>(null);
+	const [direction, setDirection] = useState<"O" | "X" | null>(null);
 	const [isPositive, setIsPositive] = useState(true);
 	const [pl, setPl] = useState<number>(0); // P&L 입력값 (퍼센트)
 	const [rr, setRr] = useState<number>(0); // R&R 값
@@ -105,12 +138,11 @@ export default function DayAfterForm({ onSubmit, currentUser, riskTaking = 5 }: 
 				/>
 			</div>
 
-			{/* 포지션 홀딩 시간 */}
 			<div>
 				<label className="block mb-1 font-medium">포지션 홀딩 시간</label>
 				<input
 					type="text"
-					placeholder="내용 입력"
+					placeholder="홀딩 시간을 입력하세요."
 					className="bg-[#F4F4F4] rounded p-2 w-full"
 				/>
 			</div>
@@ -141,140 +173,208 @@ export default function DayAfterForm({ onSubmit, currentUser, riskTaking = 5 }: 
 				/>
 			</div>
 
-			{/* 포지션 */}
-			<div className="flex gap-3">
-				<button
-					type="button"
-					onClick={() => setPosition("Long")}
-					className={`px-4 py-2 cursor-pointer rounded ${position === "Long" ? "bg-[#273042] text-white" : "bg-[#F4F4F4] text-black"
-						}`}
-				>
-					Long
-				</button>
-				<button
-					type="button"
-					onClick={() => setPosition("Short")}
-					className={`px-4 py-2 cursor-pointer rounded ${position === "Short" ? "bg-[#273042] text-white" : "bg-[#F4F4F4] text-black"
-						}`}
-				>
-					Short
-				</button>
-			</div>
-
-			{/* 비중 */}
-			<div className="flex-1">
-				<label className="block mb-1 font-medium">비중 (운용 자금 대비)</label>
-				<input type="number" className="bg-[#F4F4F4] rounded p-2 w-full" />
-			</div>
-
-			{/* Entry / Exit */}
 			<div className="flex gap-4">
-				<div className="flex-1">
-					<label className="block mb-1 font-medium">Entry Price</label>
-					<input type="number" className="bg-[#F4F4F4] rounded p-2 w-full" />
-				</div>
-				<div className="flex-1">
-					<label className="block mb-1 font-medium">Exit Price</label>
-					<input type="number" className="bg-[#F4F4F4] rounded p-2 w-full" />
-				</div>
-			</div>
-
-			{/* 리스크 테이킹 */}
-			<div className="flex-1">
-				<label className="block mb-1 font-medium">리스크 테이킹 (%)</label>
-				<input type="number" className="bg-[#F4F4F4] rounded p-2 w-full" />
-			</div>
-
-			{/* 손절/익절 */}
-			<div className="flex gap-4">
-				<div className="flex-1">
-					<label className="block mb-1 font-medium">설정 손절가</label>
-					<input type="number" className="bg-[#F4F4F4] rounded p-2 w-full" />
-				</div>
-				<div className="flex-1">
-					<label className="block mb-1 font-medium">설정 익절가</label>
-					<input type="number" className="bg-[#F4F4F4] rounded p-2 w-full" />
-				</div>
-			</div>
-
-			{/* P&L / R&R / 게이지 */}
-			<div className="flex flex-col gap-6">
-				{/* P&L */}
-				<div className="flex items-center gap-3">
-					<span className="font-semibold">P&amp;L:</span>
-					<div className="flex gap-2">
-						<button
-							type="button"
-							className={`px-3 py-1 border rounded ${isPositive ? "bg-green-500 text-white" : "bg-white text-green-500 border-green-500"
-								}`}
-							onClick={() => setIsPositive(true)}
-						>
-							+
-						</button>
-						<button
-							type="button"
-							className={`px-3 py-1 border rounded ${!isPositive ? "bg-red-500 text-white" : "bg-white text-red-500 border-red-500"
-								}`}
-							onClick={() => setIsPositive(false)}
-						>
-							-
-						</button>
-					</div>
-					<input
-						type="number"
-						value={pl}
-						onChange={(e) => setPl(Number(e.target.value))}
-						className="w-20 border rounded p-1 text-center"
+				<div className="flex-1 flex items-center justify-center gap-2">
+					<label className="block mb-1 text-sm">디렉션 프레임</label>
+					<FixedModalButton
+						options={['1D', '4H']}
+						defaultValue="선택"
+						onSelect={handleSelectOption}
 					/>
-					<span>%</span>
 				</div>
-
-				{/* R&R */}
-				<div className="flex items-center gap-3">
-					<span className="font-semibold">R&amp;R:</span>
-					<span>{rr}</span>
+				<div className="flex-1 flex items-center justify-center gap-2">
+					<label className="block mb-1 text-sm">메인 프레임</label>
+					<FixedModalButton
+						options={['4H', '1H']}
+						defaultValue="선택"
+						onSelect={handleSelectOption}
+					/>
 				</div>
+				<div className="flex-1 flex items-center justify-center gap-2">
+					<label className="block mb-1 text-sm">서브 프레임</label>
+					<FixedModalButton
+						options={['IH', '15M']}
+						defaultValue="선택"
+						onSelect={handleSelectOption}
+					/>
+				</div>
+			</div>
 
-				{/* 게이지 */}
-				<div className="relative w-full h-20">
-					<div className="absolute top-1/2 w-full border-t border-gray-300" />
-					<div className="flex justify-between text-xs text-gray-500 mt-6">
-						{Array.from({ length: gaugeMax - gaugeMin + 1 }, (_, i) => (
-							<span key={i}>{gaugeMin + i}</span>
-						))}
+			<div className="flex gap-4">
+				<div className="flex flex-col flex-1 gap-10">
+					<p className="text-gray-300">[포지션 진입]</p>
+
+					<div className="flex flex-col gap-3">
+						<label className="block mb-1 font-medium">디렉션 프레임 방향성 유무</label>
+						<div className="flex gap-3">
+							<button
+								type="button"
+								onClick={() => setDirection("O")}
+								className={`px-4 py-2 cursor-pointer rounded ${direction === "O" ? "bg-[#273042] text-white" : "bg-[#F4F4F4] text-black"
+									}`}
+							>
+								O
+							</button>
+							<button
+								type="button"
+								onClick={() => setDirection("X")}
+								className={`px-4 py-2 cursor-pointer rounded ${direction === "X" ? "bg-[#273042] text-white" : "bg-[#F4F4F4] text-black"
+									}`}
+							>
+								X
+							</button>
+						</div>
 					</div>
 
-					{/* 화살표 */}
-					<div
-						className={`absolute top-2 ${arrowColor}`}
-						style={{
-							left: `${((normalized - gaugeMin) / (gaugeMax - gaugeMin)) * 100}%`,
-							transform: "translateX(-50%)",
-						}}
-					>
-						▼
+					<div>
+						<label className="block mb-1 font-medium">추세 분석</label>
+						<textarea className="bg-[#F4F4F4] rounded p-2 w-full h-12" />
 					</div>
 
-					{/* Fail */}
-					<span className="absolute left-0 top-0 text-red-500 font-semibold">Fail</span>
+					<div className="flex flex-col w-full gap-3">
+						<div className="flex flex-col w-full gap-1">
+							<button
+								onClick={() => setIsOpen(true)}
+								className="px-4 py-2 border border-gray-300 text-black rounded text-sm cursor-pointer"
+							>
+								1진입타점
+							</button>
+
+							{selected && (
+								<div className="text-sm">
+									{selected.target}, {selected.grade}
+								</div>
+							)}
+						</div>
+
+						<EntryTable
+							isOpen={isOpen}
+							onClose={() => setIsOpen(false)}
+							onSelect={handleSelect1}
+						/>
+
+						<div className="flex flex-col w-full gap-1">
+							<button
+								onClick={() => setIsOpen2(true)}
+								className="px-4 py-2 border border-gray-300 text-black rounded text-sm cursor-pointer"
+							>
+								추가매수
+							</button>
+
+							{selected && (
+								<div className="text-sm">
+									{selected2?.target}, {selected2?.grade}
+								</div>
+							)}
+						</div>
+
+						<EntryTable
+							isOpen={isOpen2}
+							onClose={() => setIsOpen2(false)}
+							onSelect={handleSelect2}
+						/>
+
+						{/* <div className="flex flex-col w-full gap-1">
+							<button
+								onClick={() => setIsOpen3(true)}
+								className="px-4 py-2 border border-gray-300 text-black rounded text-sm cursor-pointer"
+							>
+								추가매수 (2)
+							</button>
+
+							{selected && (
+								<div className="text-sm">
+									{selected3?.target}, {selected3?.grade}
+								</div>
+							)}
+						</div>
+
+						<EntryTable
+							isOpen={isOpen3}
+							onClose={() => setIsOpen3(false)}
+							onSelect={handleSelect3}
+						/> */}
+					</div>
+
+					<div className="flex-1">
+						<label className="block mb-1 font-medium">리스크 테이킹 (%)</label>
+						<input type="number" className="bg-[#F4F4F4] rounded p-2 w-full" />
+					</div>
+
+					<div className="flex-1">
+						<label className="block mb-1 font-medium">레버리지 (배점)</label>
+						<input type="number" className="bg-[#F4F4F4] rounded p-2 w-full" />
+					</div>
+				</div>
+				<CustomDivider variant="vertical" height="h-150" />
+				<div className="flex flex-col flex-1 gap-10">
+					<p className="text-gray-300">[결과]</p>
+					<div className="flex gap-3">
+						<button
+							type="button"
+							onClick={() => setPosition("Long")}
+							className={`px-4 py-2 cursor-pointer rounded ${position === "Long" ? "bg-[#273042] text-white" : "bg-[#F4F4F4] text-black"
+								}`}
+						>
+							Long
+						</button>
+						<button
+							type="button"
+							onClick={() => setPosition("Short")}
+							className={`px-4 py-2 cursor-pointer rounded ${position === "Short" ? "bg-[#273042] text-white" : "bg-[#F4F4F4] text-black"
+								}`}
+						>
+							Short
+						</button>
+					</div>
+					{/* P&L */}
+					<div className="flex items-center gap-3">
+						<span className="font-semibold">P&amp;L:</span>
+						<div className="flex gap-2">
+							<button
+								type="button"
+								className={`px-3 py-1 border rounded ${isPositive ? "bg-green-500 text-white" : "bg-white text-green-500 border-green-500"
+									}`}
+								onClick={() => setIsPositive(true)}
+							>
+								+
+							</button>
+							<button
+								type="button"
+								className={`px-3 py-1 border rounded ${!isPositive ? "bg-red-500 text-white" : "bg-white text-red-500 border-red-500"
+									}`}
+								onClick={() => setIsPositive(false)}
+							>
+								-
+							</button>
+						</div>
+						<input
+							type="number"
+							value={pl}
+							onChange={(e) => setPl(Number(e.target.value))}
+							className="w-20 border rounded p-1 text-center"
+						/>
+						<span>%</span>
+					</div>
+
+					{/* R&R */}
+					<div className="flex items-center gap-3">
+						<span className="font-semibold">R&amp;R:</span>
+						<span>{rr}</span>
+					</div>
 				</div>
 			</div>
 
-			{/* 근거 및 복기 */}
 			<div>
-				<label className="block mb-1 font-medium">포지션 진입 근거</label>
-				<textarea className="bg-[#F4F4F4] rounded p-2 w-full h-24" />
-			</div>
-			<div>
-				<label className="block mb-1 font-medium">포지션 탈출 근거</label>
-				<textarea className="bg-[#F4F4F4] rounded p-2 w-full h-24" />
-			</div>
-			<div>
-				<label className="block mb-1 font-medium">최종 복기</label>
+				<label className="block mb-1 font-medium">매매 복기</label>
 				<textarea className="bg-[#F4F4F4] rounded p-2 w-full h-24" />
 			</div>
 
-			{/* 제출 */}
+			<div>
+				<label className="block mb-1 font-medium">담당 트레이너 피드백 요청 사항</label>
+				<textarea className="bg-[#F4F4F4] rounded p-2 w-full h-24" />
+			</div>
+
 			<button
 				type="submit"
 				className="bg-gradient-to-r from-[#D2C693] to-[#928346] text-white py-3 rounded mb-20"
