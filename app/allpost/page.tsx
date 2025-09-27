@@ -105,7 +105,7 @@ export default function AllPost() {
 				{filteredData.map((post) => (
 					<div
 						key={post.id}
-						onClick={() => router.push("/detailpost")}
+						onClick={() => router.push("/postdetail")}
 						className="cursor-pointer border border-gray-200 rounded-md shadow-sm overflow-hidden hover:shadow-md transition"
 					>
 						{/* 카테고리 뱃지 */}

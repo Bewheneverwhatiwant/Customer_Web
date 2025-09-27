@@ -73,7 +73,7 @@ export default function Reservation() {
 				<CustomDivider />
 				{/* 날짜 선택 */}
 				<h2 className="text-2xl mt-10 mb-2">1. 상담 날짜를 선택해주세요.</h2>
-				<div className="flex flex-col md:flex-row items-start gap-6 mb-6">
+				<div className="flex flex-col items-start gap-6 mb-6">
 					<div>
 						<Calendar
 							onChange={(date) => {

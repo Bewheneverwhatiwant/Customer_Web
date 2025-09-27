@@ -429,7 +429,7 @@ export default function Signup() {
 								onChange={setServiceOk}
 								size="sm"
 							/>
-							<CustomLink href="/" variant="primary" fontSize='text-sm'>
+							<CustomLink href="/signup/servicerule" variant="primary" fontSize='text-sm'>
 								서비스 이용 약관
 							</CustomLink>
 							<p className='text-sm'>에 동의합니다. (필수)</p>
@@ -440,7 +440,7 @@ export default function Signup() {
 								onChange={setInfoOk}
 								size="sm"
 							/>
-							<CustomLink href="/" variant="primary" fontSize='text-sm'>
+							<CustomLink href="/signup/myinforule" variant="primary" fontSize='text-sm'>
 								개인정보 이용 약관
 							</CustomLink>
 							<p className='text-sm'>에 동의합니다. (필수)</p>

@@ -9,6 +9,11 @@ type Feedback = {
 	content: string;
 	date: string;
 	isCrown?: boolean;
+	year: string;
+	month: string;
+	week: string;
+	day: string;
+	time: string;
 };
 
 export default function AllFeedback() {
@@ -16,80 +21,95 @@ export default function AllFeedback() {
 	const [otherFeedbacks, setOtherFeedbacks] = useState<Feedback[]>([]);
 	const router = useRouter();
 
-	const handleNavigate = (id: number) => {
-		router.push(`/feedback/${id}`); // 원하는 경로로 이동
+	const handleNavigate = (fb: Feedback) => {
+		router.push(
+			`/timefeedback?year=${fb.year}&month=${fb.month}&week=${fb.week}&day=${fb.day}&time=${fb.time}&title=${encodeURIComponent(fb.title)}`
+		);
 	};
 
-
-	// mockData
+	// mockData (props 값 포함)
 	const mockData: Feedback[] = [
 		{
 			id: 1,
 			title: "8/24 (1) 작성 완료",
-			content:
-				"안녕하세요 트레이너님! 저번에 조언해주신 대로 이번에는 다르게 기업을 골라봤...",
+			content: "안녕하세요 트레이너님! ...",
 			date: "2025.8.3.21:51",
 			isCrown: true,
+			year: "2025",
+			month: "8",
+			week: "셋째 주",
+			day: "24",
+			time: "21:51:00",
 		},
 		{
 			id: 2,
-			title: "8/24 (1) 작성 완료",
-			content:
-				"안녕하세요 트레이너님! 저번에 조언해주신 대로 이번에는 다르게 기업을 골라봤...",
-			date: "2025.8.3.21:51",
+			title: "8/24 (2) 작성 완료",
+			content: "이번엔 다르게 기업을 골라봤...",
+			date: "2025.8.3.23:35",
 			isCrown: true,
+			year: "2025",
+			month: "8",
+			week: "셋째 주",
+			day: "24",
+			time: "23:35:59",
 		},
 		{
 			id: 3,
-			title: "8/24 (1) 작성 완료",
-			content:
-				"안녕하세요 트레이너님! 저번에 조언해주신 대로 이번에는 다르게 기업을 골라봤...",
-			date: "2025.8.3.21:51",
+			title: "8/24 (2) 작성 완료",
+			content: "이번엔 다르게 기업을 골라봤...",
+			date: "2025.8.3.23:35",
 			isCrown: true,
+			year: "2025",
+			month: "8",
+			week: "셋째 주",
+			day: "24",
+			time: "23:35:59",
 		},
 		{
 			id: 4,
-			title: "8/24 (1) 작성 완료",
-			content:
-				"안녕하세요 트레이너님! 저번에 조언해주신 대로 이번에는 다르게 기업을 골라봤...",
-			date: "2025.8.3.21:54",
+			title: "8/24 (3) 작성 완료",
+			content: "또 다른 피드백입니다...",
+			date: "2025.8.3.23:59",
+			year: "2025",
+			month: "8",
+			week: "셋째 주",
+			day: "24",
+			time: "23:59:59",
 		},
 		{
 			id: 5,
-			title: "8/24 (1) 작성 완료",
-			content:
-				"안녕하세요 트레이너님! 저번에 조언해주신 대로 이번에는 다르게 기업을 골라봤...",
-			date: "2025.8.3.21:51",
+			title: "8/24 (3) 작성 완료",
+			content: "또 다른 피드백입니다...",
+			date: "2025.8.3.23:59",
+			year: "2025",
+			month: "8",
+			week: "셋째 주",
+			day: "24",
+			time: "23:59:59",
 		},
 		{
 			id: 6,
-			title: "8/24 (1) 작성 완료",
-			content:
-				"안녕하세요 트레이너님! 저번에 조언해주신 대로 이번에는 다르게 기업을 골라봤...",
-			date: "2025.8.3.21:51",
+			title: "8/24 (3) 작성 완료",
+			content: "또 다른 피드백입니다...",
+			date: "2025.8.3.23:59",
+			year: "2025",
+			month: "8",
+			week: "셋째 주",
+			day: "24",
+			time: "23:59:59",
 		},
 		{
 			id: 7,
-			title: "8/24 (1) 작성 완료",
-			content:
-				"안녕하세요 트레이너님! 저번에 조언해주신 대로 이번에는 다르게 기업을 골라봤...",
-			date: "2025.8.3.21:51",
+			title: "8/24 (3) 작성 완료",
+			content: "또 다른 피드백입니다...",
+			date: "2025.8.3.23:59",
+			year: "2025",
+			month: "8",
+			week: "셋째 주",
+			day: "24",
+			time: "23:59:59",
 		},
-		{
-			id: 8,
-			title: "8/24 (1) 작성 완료",
-			content:
-				"안녕하세요 트레이너님! 저번에 조언해주신 대로 이번에는 다르게 기업을 골라봤...",
-			date: "2025.8.3.21:51",
-		},
-		{
-			id: 9,
-			title: "8/24 (1) 작성 완료",
-			content:
-				"안녕하세요 트레이너님! 저번에 조언해주신 대로 이번에는 다르게 기업을 골라봤...",
-			date: "2025.8.3.21:51",
-		},
-	];
+	]
 
 	useEffect(() => {
 		const crowns = mockData.filter((f) => f.isCrown);
@@ -109,7 +129,7 @@ export default function AllFeedback() {
 				{crownFeedbacks.map((fb) => (
 					<button
 						key={fb.id}
-						onClick={() => handleNavigate(fb.id)}
+						onClick={() => handleNavigate(fb)}
 						className="cursor-pointer relative bg-gray-100 rounded-lg p-4 flex flex-col justify-between text-left hover:shadow-md transition-shadow"
 					>
 						{/* Crown 아이콘 */}
@@ -132,7 +152,7 @@ export default function AllFeedback() {
 				{otherFeedbacks.map((fb) => (
 					<button
 						key={fb.id}
-						onClick={() => handleNavigate(fb.id)}
+						onClick={() => handleNavigate(fb)}
 						className="cursor-pointer bg-gray-100 rounded-lg p-4 flex flex-col justify-between text-left hover:shadow-md transition-shadow"
 					>
 						<span className="font-semibold mb-2">{fb.title}</span>
