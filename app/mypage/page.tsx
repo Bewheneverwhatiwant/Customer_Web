@@ -39,7 +39,7 @@ export default function MyPage() {
 	useEffect(() => {
 		const fetchUserInfo = async () => {
 			const res = await myInfo();
-			// console.log("마이페이지 내 정보:", res);
+			console.log("마이페이지 내 정보:", res);
 
 			if (res && res.data) {
 				setUserData({
@@ -59,10 +59,10 @@ export default function MyPage() {
 	return (
 		<div className="flex h-screen bg-white">
 			{/* 테스트용으로, 위의 mockData 바꿔서 볼 수 있는 컴포넌트입니다 */}
-			<MyPageSidebar name={mockUser.name} email={mockUser.email} phone={mockUser.phone} />
+			{/* <MyPageSidebar name={mockUser.name} email={mockUser.email} phone={mockUser.phone} /> */}
 
 			{/* 로그인한 계정의 실제 status에 따른 컴포넌트입니다 */}
-			{/* {userData && <MyPageSidebar name={userData.name} email={mockUser.email} phone={mockUser.phone} />} */}
+			{userData && <MyPageSidebar name={userData.name} email={mockUser.email} phone={mockUser.phone} />}
 
 			{/* 테스트용으로, 위의 mockData 바꿔서 볼 수 있는 컴포넌트입니다 */}
 			<MyPageMain state={state} />

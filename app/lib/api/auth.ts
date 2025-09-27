@@ -54,12 +54,12 @@ class AuthAPI {
   ): Promise<ApiResponse<T>> {
     try {
       // 쿠키에서 XSRF-TOKEN 꺼내기
-      const getCookie = (name: string) => {
-        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-        return match ? decodeURIComponent(match[2]) : null;
-      };
-      const xsrfToken = getCookie("XSRF-TOKEN");
-      console.log("📌 쿠키에서 가져온 XSRF-TOKEN:", xsrfToken);
+      // const getCookie = (name: string) => {
+      //   const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      //   return match ? decodeURIComponent(match[2]) : null;
+      // };
+      // const xsrfToken = getCookie("XSRF-TOKEN");
+      // console.log("📌 쿠키에서 가져온 XSRF-TOKEN:", xsrfToken);
 
       // const finalHeaders = {
       //   'Content-Type': 'application/json',
@@ -68,6 +68,10 @@ class AuthAPI {
       // };
 
       const isFormData = options.body instanceof FormData;
+
+      // 🔹 1. 저장된 토큰 꺼내기
+      const xsrfToken = localStorage.getItem("XSRF-TOKEN");
+      console.log("📌 저장된 XSRF-TOKEN:", xsrfToken);
 
       const finalHeaders: HeadersInit = {
         ...(xsrfToken ? { 'X-XSRF-TOKEN': xsrfToken } : {}),
@@ -93,6 +97,13 @@ class AuthAPI {
 
       console.log("⬅️ RESPONSE STATUS:", response.status);
       console.log("⬅️ RESPONSE HEADERS:", [...response.headers.entries()]);
+
+      // 🔹 4. 응답 헤더에서 새 XSRF-TOKEN 있으면 저장
+      const newToken = response.headers.get("XSRF-TOKEN");
+      if (newToken) {
+        console.log("📌 응답에서 새 XSRF-TOKEN 추출:", newToken);
+        localStorage.setItem("XSRF-TOKEN", newToken);
+      }
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

@@ -15,9 +15,9 @@ type Props = {
 
 export default function TrainerInfo({ state }: Props) {
 	if (state === "TRAINER_ASSIGNED") {
-		// ✅ 트레이너 배정 완료 화면
+		// 트레이너 배정 완료 화면
 		return (
-			<div className="p-6 border rounded-lg bg-white text-left max-w-xl mx-auto">
+			<div className="p-6 bg-white text-left w-full items-start">
 				<h2 className="text-xl font-bold text-gray-900 mb-4">담당 트레이너</h2>
 				<div className="flex items-start gap-4">
 					{/* 프로필 이미지 (null 처리) */}
@@ -45,9 +45,9 @@ export default function TrainerInfo({ state }: Props) {
 		);
 	}
 
-	// ✅ 트레이너 매칭 중 화면 (원형 로딩 인디케이터)
+	// 트레이너 매칭 중 화면 (원형 로딩 인디케이터)
 	return (
-		<div className="p-6 border rounded-lg bg-white text-left max-w-xl mx-auto">
+		<div className="p-6 bg-white text-left max-w-xl mx-auto">
 			<h2 className="text-xl font-bold text-gray-900 mb-4">담당 트레이너</h2>
 			<div className="flex items-center gap-4">
 				{/* 원형 로딩 인디케이터 */}

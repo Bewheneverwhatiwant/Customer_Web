@@ -1,9 +1,12 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import NotionPageButton from "../components/NotionPageButton";
 import { CustomDropdownButton } from "../components/CustomDropdown";
 
 export default function BottomNotion() {
+	const router = useRouter();
+
 	// 드롭다운 연도 옵션
 	const yearOptions = ["2025", "2024", "2023"];
 	const [selectedYear, setSelectedYear] = useState("2025");
@@ -37,7 +40,11 @@ export default function BottomNotion() {
 						key={item.month}
 						number={item.month}
 						text={item.text}
-						onClick={() => alert(`${item.month}월 매매일지 클릭됨`)}
+						onClick={() =>
+							router.push(
+								`/monthfeedback?year=${selectedYear}&month=${item.month}`
+							)
+						}
 					/>
 				))}
 			</div>

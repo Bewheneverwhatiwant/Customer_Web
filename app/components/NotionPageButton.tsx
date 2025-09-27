@@ -14,7 +14,7 @@ const NotionPageButton: React.FC<NotionPageButtonProps> = ({ number, text, onCli
       className="flex items-center gap-1 cursor-pointer w-full"
     >
       {/* 좌측 숫자 아이콘 */}
-      <div className="w-5 h-5 p-2 bg-blue-300 rounded-sm flex items-center justify-center text-white font-semibold">
+      <div className="w-5 h-5 p-3 bg-[#0F182B] rounded-sm flex items-center justify-center text-white font-semibold">
         {number}
       </div>
 

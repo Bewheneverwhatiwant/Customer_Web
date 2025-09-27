@@ -60,7 +60,7 @@ export default function MyPageMain({ state }: Props) {
 
 				{/* 레벨테스트가 끝나고 트레이너 배정 대기 중 또는 배정 완료 이후에만 보임  */}
 				{(state == "PAID_AFTER_TEST_TRAINER_ASSIGNING" || state == "TRAINER_ASSIGNED") && (
-					<div className="flex flex-col w-full gap-10 mt-10">
+					<div className="flex flex-col w-full gap-10 mt-10 items-start">
 						<TrainerInfo state={state} />
 						<StatusWrapper type="premium" basic_available={basic_available} premium_available={premium_available} message={message}>
 							<RequestFeedbackButton />
