@@ -12,10 +12,16 @@ import { mapSwingFormData, mapDayFormData, mapScalpingFormData } from "../utils/
 export default function RequestFeedback() {
 	// 현재 로그인된 사용자
 	// 0 - 무료, 1 - 스윙, 2 - 데이, 3 - 스켈핑 
-	const currentUser = mockUsers[3];
+	const currentUser = mockUsers[2];
 	const { requestSwingFeedback, requestDayFeedback, requestScalpingFeedback } = useAuth();
 
 	const { investmentType, completion } = currentUser;
+
+	console.log("User::");
+	console.log(investmentType);
+	console.log(completion);
+
+
 
 	const handleSubmit = async (formData: any) => {
 		console.log("서버로 전송할 데이터:", formData);
@@ -26,14 +32,49 @@ export default function RequestFeedback() {
 
 			if (investmentType === "스윙") {
 				fd = mapSwingFormData(formData);
-				console.log("정제된 데이터는 (entries):");
+				console.log("-----------정제된 데이터는 (entries):-----------");
 				fd.forEach((value, key) => console.log(key, value));
 				res = await requestSwingFeedback(fd);
-			} else if (investmentType === "데이") {
+			} else if (investmentType === "DAY") {
 				fd = mapDayFormData(formData);
-				console.log("정제된 데이터는 (entries):");
+				console.log("-----------정제된 데이터는 (entries):-----------");
 				fd.forEach((value, key) => console.log(key, value));
+				console.log("-------------정제된 데이터 끝------------------");
 				res = await requestDayFeedback(fd);
+
+				// const fd = new FormData();
+				// fd.append("membershipLevel", "PREMIUM");
+				// fd.append("requestDate", "2025-09-28");
+				// fd.append("category", "string");
+				// fd.append("positionHoldingTime", "string");
+
+				// const fakeFile = new File(["dummy content"], "test.png", { type: "image/png" });
+				// fd.append("screenshotFiles", fakeFile);
+
+
+				// fd.append("riskTaking", "0");
+				// fd.append("leverage", "0");
+				// fd.append("position", "LONG");
+				// fd.append("trainerFeedbackRequestContent", "string");
+				// fd.append("directionFrame", "string");
+				// fd.append("mainFrame", "string");
+				// fd.append("subFrame", "string");
+				// fd.append("directionFrameExists", "true");
+				// fd.append("trendAnalysis", "string");
+				// fd.append("pnl", "-5");
+				// fd.append("winLossRatio", "string");
+				// fd.append("entryPoint1", "REVERSE");
+				// fd.append("grade", "S_PLUS");
+				// fd.append("entryPoint2", "2025-09-28");
+				// fd.append("tradingReview", "string");
+
+				// console.log("-----------하드코딩 FormData(entries):-----------");
+				// fd.forEach((value, key) => console.log(key, value));
+				// console.log("-------------정제된 데이터 끝------------------");
+
+				// const res = await requestDayFeedback(fd);
+				console.log("res는:", res);
+
 			} else if (investmentType === "스켈핑") {
 				fd = mapScalpingFormData(formData);
 				console.log("정제된 데이터는 (entries):");
@@ -52,9 +93,9 @@ export default function RequestFeedback() {
 		if (completion === "무료" || completion === "완강전") {
 			return <BasicOrBeforeForm onSubmit={handleSubmit} currentUser={currentUser} />;
 		}
-		if (completion === "완강후") {
+		if (completion === "AFTER_COMPLETION") {
 			if (investmentType === "스윙") return <SwingAfterForm currentUser={currentUser} onSubmit={handleSubmit} />;
-			if (investmentType === "데이") return <DayAfterForm currentUser={currentUser} onSubmit={handleSubmit} />;
+			if (investmentType === "DAY") return <DayAfterForm currentUser={currentUser} onSubmit={handleSubmit} />;
 			if (investmentType === "스켈핑") return <ScalpingAfterForm currentUser={currentUser} onSubmit={handleSubmit} />;
 		}
 		return <div>조건에 맞는 Form이 없습니다.</div>;

@@ -16,8 +16,8 @@ export const mockUsers: User[] = [
     phone: "010-9876-5432",
     email: "younghee@example.com",
     status: "TRAINER_ASSIGNED",
-    investmentType: "스윙",
-    completion: "완강후",
+    investmentType: "DAY",
+    completion: "AFTER_COMPLETION",
   },
   {
     id: 3,
@@ -25,8 +25,8 @@ export const mockUsers: User[] = [
     phone: "010-5555-1111",
     email: "jihoon@example.com",
     status: "TRAINER_ASSIGNED",
-    investmentType: "데이",
-    completion: "완강후",
+    investmentType: "DAY",
+    completion: "AFTER_COMPLETION",
   },
   {
     id: 4,

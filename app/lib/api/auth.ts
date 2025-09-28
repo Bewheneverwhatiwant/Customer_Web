@@ -99,10 +99,17 @@ class AuthAPI {
       console.log("⬅️ RESPONSE HEADERS:", [...response.headers.entries()]);
 
       // 🔹 4. 응답 헤더에서 새 XSRF-TOKEN 있으면 저장
-      const newToken = response.headers.get("XSRF-TOKEN");
+      // const newToken = response.headers.get("XSRF-TOKEN");
+      const newToken =
+        response.headers.get("x-xsrf-token") ||
+        response.headers.get("xsrf-token");
+
+      console.log("newToken:", newToken);
+
       if (newToken) {
         console.log("📌 응답에서 새 XSRF-TOKEN 추출:", newToken);
         localStorage.setItem("XSRF-TOKEN", newToken);
+
       }
 
       if (!response.ok) {
@@ -236,10 +243,29 @@ class AuthAPI {
 
   // 데이 피드백 요청
   async requestDayFeedback(data: DayFeedbackRequest): Promise<ApiResponse> {
-    const formData = new FormData();
-    Object.entries(data).forEach(([key, value]) => {
-      formData.append(key, value as any);
+    let formData: FormData;
+
+    // 이미 FormData라면 그대로 사용
+    if (data instanceof FormData) {
+      formData = data;
+    } else {
+      // 일반 객체라면 새 FormData 생성
+      formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        if (typeof value === "boolean") {
+          formData.append(key, value ? "true" : "false");
+        } else if (value !== undefined && value !== null) {
+          formData.append(key, String(value));
+        }
+      });
+    }
+
+    // ✅ 최종 전송 FormData 디버깅
+    console.log("----------- 최종 FormData (entries) -----------");
+    formData.forEach((value, key) => {
+      console.log(`${key}:`, value);
     });
+    console.log("------------- FormData 끝 ------------------");
 
     return this.request("/api/v1/feedback-requests/day", {
       method: "POST",

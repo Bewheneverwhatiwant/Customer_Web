@@ -93,7 +93,7 @@ const Home = () => {
             />
           </section>
 
-          <section id="section-a" className="w-[80%] relative">
+          <section id="section-a" className="w-[50%] relative">
             <Image
               src="/images/tab_a_img_2.svg"
               alt="섹션 A 이미지"
@@ -104,7 +104,7 @@ const Home = () => {
             />
           </section>
 
-          <section ref={sectionRefs.B} id="section-b" className="w-[80%] relative">
+          <section ref={sectionRefs.B} id="section-b" className="w-[50%] relative">
             <Image
               src="/images/tab_b_img.svg"
               alt="섹션 B 이미지"
@@ -115,7 +115,7 @@ const Home = () => {
             />
           </section>
 
-          <section ref={sectionRefs.C} id="section-c" className="w-[80%] relative">
+          <section ref={sectionRefs.C} id="section-c" className="w-[50%] relative">
             <Image
               src="/images/tab_c_img.svg"
               alt="섹션 C 이미지"

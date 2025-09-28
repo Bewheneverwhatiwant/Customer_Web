@@ -14,7 +14,7 @@ import { useAuth } from "../hooks/useAuth";
 // "TRAINER_ASSIGNED"
 
 // mockData
-const state: UserStatus = "UID_APPROVED"; // 바꿔가면서 테스트
+const state: UserStatus = "TRAINER_ASSIGNED"; // 바꿔가면서 테스트
 
 // mockData
 const mockUser = {

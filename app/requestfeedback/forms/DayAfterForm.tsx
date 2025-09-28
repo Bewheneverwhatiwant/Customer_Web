@@ -50,7 +50,10 @@ export default function DayAfterForm({ onSubmit, currentUser, riskTaking = 5 }: 
 		setSelectedOption(selectedValue);  // 선택된 값 업데이트
 	};
 
-	const [screenshot, setScreenshot] = useState<string | null>(null);
+	// const [screenshot, setScreenshot] = useState<string | null>(null);
+	// 상태 분리
+	const [screenshotFile, setScreenshotFile] = useState<File | null>(null); // 업로드용
+	const [screenshotPreview, setScreenshotPreview] = useState<string | null>(null); // 미리보기용
 	const [position, setPosition] = useState<"Long" | "Short" | null>(null);
 	const [direction, setDirection] = useState<"O" | "X" | null>(null);
 	const [isPositive, setIsPositive] = useState(true);
@@ -78,8 +81,8 @@ export default function DayAfterForm({ onSubmit, currentUser, riskTaking = 5 }: 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files[0]) {
 			const file = e.target.files[0];
-			const imageUrl = URL.createObjectURL(file);
-			setScreenshot(imageUrl);
+			setScreenshotFile(file); // ✅ 서버 전송용 File 객체 저장
+			setScreenshotPreview(URL.createObjectURL(file)); // ✅ 화면에 보여줄 blob URL
 		}
 	};
 
@@ -90,10 +93,10 @@ export default function DayAfterForm({ onSubmit, currentUser, riskTaking = 5 }: 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		const formData = {
-			screenshot,
+			screenshot: screenshotFile,
 			position,
 			pl: isPositive ? pl : -pl,
-			rr,
+			// rr,
 		};
 		onSubmit(formData);
 	};
@@ -106,7 +109,7 @@ export default function DayAfterForm({ onSubmit, currentUser, riskTaking = 5 }: 
 				<span
 					className={`px-3 py-1 text-white rounded
     ${investmentType === "스윙" ? "bg-orange-400" : ""}
-    ${investmentType === "데이" ? "bg-green-400" : ""}
+    ${investmentType === "데이" ? "bg-green-600" : ""}
     ${investmentType === "스켈핑" ? "bg-sky-400" : ""}`}
 				>
 					{investmentType}
@@ -154,9 +157,9 @@ export default function DayAfterForm({ onSubmit, currentUser, riskTaking = 5 }: 
 					className="w-full h-40 rounded bg-[#F4F4F4] flex items-center justify-center cursor-pointer overflow-hidden"
 					onClick={handleUploadClick}
 				>
-					{screenshot ? (
+					{screenshotPreview ? (
 						<img
-							src={screenshot}
+							src={screenshotPreview}
 							alt="screenshot preview"
 							className="object-contain w-full h-full"
 						/>

@@ -20,7 +20,7 @@ export default function TimeFeedback({
 	title,
 }: TimeFeedbackProps) {
 	return (
-		<div className="p-6 mt-20">
+		<div className="w-full max-w-lg p-6">
 			{/* 상단 타이틀 */}
 			<h2 className="text-gray-400 text-lg mb-2">
 				{year}년 / {month}월 / {week} / {day} {time}

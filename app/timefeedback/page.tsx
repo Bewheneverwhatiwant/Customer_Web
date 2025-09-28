@@ -12,7 +12,7 @@ export default function Page() {
 	const Type: TradeType = "SWING"; // Type 은 유니온 타입 중 하나
 
 	return (
-		<div>
+		<div className="w-full p-6 mt-20 flex flex-col items-center">
 			<TimeFeedback
 				year="2025"
 				month="8"
