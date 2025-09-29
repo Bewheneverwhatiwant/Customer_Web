@@ -307,7 +307,7 @@ export default function Signup() {
 	return (
 		<div className="w-full min-h-screen bg-gray-100">
 			<div className="pt-16 w-full flex align-top gap-2 p-1">
-				<div className="w-full h-screen flex flex-1 flex-col justify-start items-center p-1 pb-5">
+				<div className="w-full h-screen flex flex-1 flex-col justify-start items-center p-1 pb-5 hidden md:flex">
 					<Image
 						src="/images/logo_main.png"
 						alt="logo"

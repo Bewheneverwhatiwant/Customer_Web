@@ -34,7 +34,7 @@ interface InputFieldProps {
   "aria-describedby"?: string;
   "aria-label"?: string;
   required?: boolean;
-  autocomplete?: string;
+  autoComplete?: string;
 }
 
 const CustomInputField: React.FC<InputFieldProps> = ({
@@ -62,14 +62,14 @@ const CustomInputField: React.FC<InputFieldProps> = ({
   "aria-describedby": ariaDescribedby,
   "aria-label": ariaLabel,
   required = false,
-  autocomplete,
+  autoComplete,
 }) => {
-  const [inputValue, setInputValue] = useState(value);
+  // const [inputValue, setInputValue] = useState(value);
   const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
-    setInputValue(newValue);
+    // setInputValue(newValue);
 
     // 입력값 검증 함수가 존재하면 실행
     if (validate) {
@@ -83,7 +83,7 @@ const CustomInputField: React.FC<InputFieldProps> = ({
 
   const handleButtonClick = () => {
     if (onButtonClick) {
-      const validationError = validate ? validate(inputValue) : null;
+      const validationError = validate ? validate(value) : null;
       if (!validationError) {
         onButtonClick();
       } else {
@@ -110,13 +110,13 @@ const CustomInputField: React.FC<InputFieldProps> = ({
         <input
           id={id}
           type={type}
-          value={inputValue}
+          value={value}
           onChange={handleChange}
           placeholder={placeholder}
           maxLength={maxLength}
           disabled={disabled}
           required={required}
-          autoComplete={autocomplete}
+          autoComplete={autoComplete}
           aria-label={ariaLabel}
           aria-describedby={clsx(
             ariaDescribedby,
@@ -152,7 +152,7 @@ const CustomInputField: React.FC<InputFieldProps> = ({
       {/* 최대 글자수 표시 (variant 1에서 사용) */}
       {maxLength && variant !== 2 && (
         <div className="text-sm text-right mt-1">
-          {inputValue.length}/{maxLength}
+          {value.length}/{maxLength}
         </div>
       )}
 

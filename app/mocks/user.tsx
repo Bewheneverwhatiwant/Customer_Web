@@ -7,8 +7,8 @@ export const mockUsers: User[] = [
     phone: "010-1234-5678",
     email: "minsu@example.com",
     status: "TRAINER_ASSIGNED",
-    investmentType: "스윙",
-    completion: "무료",
+    investmentType: "SWING",
+    completion: "BEFORE_COMPLETION",
   },
   {
     id: 2,
@@ -34,8 +34,8 @@ export const mockUsers: User[] = [
     phone: "010-2222-3333",
     email: "sujeong@example.com",
     status: "TRAINER_ASSIGNED",
-    investmentType: "스켈핑",
-    completion: "완강후",
+    investmentType: "SCALPING",
+    completion: "AFTER_COMPLETION",
   },
   {
     id: 5,
@@ -43,8 +43,8 @@ export const mockUsers: User[] = [
     phone: "010-4444-6666",
     email: "woosung@example.com",
     status: "TRAINER_ASSIGNED",
-    investmentType: "데이",
-    completion: "완강전",
+    investmentType: "DAY",
+    completion: "AFTER_COMPLETION",
   },
   {
     id: 6,
@@ -52,7 +52,7 @@ export const mockUsers: User[] = [
     phone: "010-7777-8888",
     email: "gaeul@example.com",
     status: "TRAINER_ASSIGNED",
-    investmentType: "스켈핑",
-    completion: "완강후",
+    investmentType: "SCALPING",
+    completion: "AFTER_COMPLETION",
   },
 ];

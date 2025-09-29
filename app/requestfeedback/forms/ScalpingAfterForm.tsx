@@ -84,14 +84,14 @@ export default function ScalpingAfterForm({ onSubmit, currentUser, riskTaking = 
 			<div className="flex items-center gap-3 mb-6">
 				<span
 					className={`px-3 py-1 text-white rounded
-            ${investmentType === "스윙" ? "bg-orange-400" : ""}
-            ${investmentType === "데이" ? "bg-green-400" : ""}
-            ${investmentType === "스켈핑" ? "bg-sky-400" : ""}`}
+            ${investmentType === "SWING" ? "bg-orange-400" : ""}
+            ${investmentType === "DAY" ? "bg-green-400" : ""}
+            ${investmentType === "SCALPING" ? "bg-sky-400" : ""}`}
 				>
 					{investmentType}
 				</span>
 				<span className="px-3 py-1 border rounded">{completion}</span>
-				{investmentType === "스윙" && <WeekSelector onChange={handleWeekChange} />}
+				{investmentType === "SWING" && <WeekSelector onChange={handleWeekChange} />}
 			</div>
 
 			{/* 기록 날짜 */}

@@ -30,7 +30,7 @@ export default function RequestFeedback() {
 			let fd: FormData;
 			let res;
 
-			if (investmentType === "스윙") {
+			if (investmentType === "SWING") {
 				fd = mapSwingFormData(formData);
 				console.log("-----------정제된 데이터는 (entries):-----------");
 				fd.forEach((value, key) => console.log(key, value));
@@ -75,7 +75,7 @@ export default function RequestFeedback() {
 				// const res = await requestDayFeedback(fd);
 				console.log("res는:", res);
 
-			} else if (investmentType === "스켈핑") {
+			} else if (investmentType === "SCALPING") {
 				fd = mapScalpingFormData(formData);
 				console.log("정제된 데이터는 (entries):");
 				fd.forEach((value, key) => console.log(key, value));
@@ -90,20 +90,20 @@ export default function RequestFeedback() {
 	};
 
 	const renderForm = () => {
-		if (completion === "무료" || completion === "완강전") {
+		if (completion === "FREE" || completion === "BEFORE_COMPLETION") {
 			return <BasicOrBeforeForm onSubmit={handleSubmit} currentUser={currentUser} />;
 		}
 		if (completion === "AFTER_COMPLETION") {
-			if (investmentType === "스윙") return <SwingAfterForm currentUser={currentUser} onSubmit={handleSubmit} />;
+			if (investmentType === "SWING") return <SwingAfterForm currentUser={currentUser} onSubmit={handleSubmit} />;
 			if (investmentType === "DAY") return <DayAfterForm currentUser={currentUser} onSubmit={handleSubmit} />;
-			if (investmentType === "스켈핑") return <ScalpingAfterForm currentUser={currentUser} onSubmit={handleSubmit} />;
+			if (investmentType === "SCALPING") return <ScalpingAfterForm currentUser={currentUser} onSubmit={handleSubmit} />;
 		}
 		return <div>조건에 맞는 Form이 없습니다.</div>;
 	};
 
 	return (
 		<div className="flex h-screen bg-white flex-col items-center gap-6 p-6 mt-20">
-			{(completion == "완강전" || completion == "완강후") && (
+			{(completion == "BEFORE_COMPLETION" || completion == "AFTER_COMPLETION") && (
 				<FeedbackHeader />
 			)}
 

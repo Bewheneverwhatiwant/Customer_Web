@@ -74,9 +74,9 @@ export default function PostDetailPage() {
 	};
 
 	return (
-		<div className="max-w-6xl mx-auto px-6 pb-20 pt-20 flex gap-10 mt-20">
+		<div className="max-w-6xl mx-auto px-6 pb-20 pt-20 flex flex-col md:flex-row gap-10 mt-20">
 			{/* 좌측: 조교 프로필 */}
-			<div className="w-1/4 flex flex-col items-center">
+			<div className="w-full md:w-1/4 flex flex-col items-center">
 				<div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mb-4">
 					{mockData.assistant.image ? (
 						<Image
@@ -100,7 +100,7 @@ export default function PostDetailPage() {
 			</div>
 
 			{/* 우측: 본문 및 댓글 */}
-			<div className="w-3/4 flex flex-col">
+			<div className="w-full md:w-3/4 flex flex-col">
 				{/* 제목 + 날짜 + 좋아요/댓글 */}
 				<div className="mb-6 border-b border-gray-200 pb-4">
 					<h1 className="text-2xl font-bold mb-2">{mockData.title}</h1>
@@ -120,18 +120,12 @@ export default function PostDetailPage() {
 				</div>
 
 				{/* 본문 */}
-				<p className="text-gray-800 mb-6 whitespace-pre-line">
-					{mockData.content}
-				</p>
-
-				{/* 본문 이미지 예시 */}
+				<p className="text-gray-800 mb-6 whitespace-pre-line">{mockData.content}</p>
 				<div className="w-full h-32 bg-gray-200 flex items-center justify-center text-gray-500 mb-6">
 					칼럼에 첨부한 이미지
 				</div>
 
-				<p className="text-gray-800 mb-6 whitespace-pre-line">
-					{mockData.content}
-				</p>
+				<p className="text-gray-800 mb-6 whitespace-pre-line">{mockData.content}</p>
 				<div className="w-full h-32 bg-gray-200 flex items-center justify-center text-gray-500 mb-6">
 					칼럼에 첨부한 이미지
 				</div>
@@ -141,7 +135,7 @@ export default function PostDetailPage() {
 						<button
 							onClick={() => setLiked((prev) => !prev)}
 							className={`flex items-center gap-1 cursor-pointer px-2 py-1 rounded 
-      ${liked ? "bg-blue-100 text-blue-600" : ""}`}
+				  ${liked ? "bg-blue-100 text-blue-600" : ""}`}
 						>
 							<ThumbsUp
 								size={16}

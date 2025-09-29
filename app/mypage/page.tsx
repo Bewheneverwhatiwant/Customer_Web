@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import MyPageSidebar from "./MyPageSidebar";
 import MyPageMain from "./MyPageMain";
+import MyPageSidebarSkeleton from "./MyPageSidebarSkeleton";
 
 import { UserStatus } from "../mocks/status";
 import { useAuth } from "../hooks/useAuth";
@@ -14,7 +15,8 @@ import { useAuth } from "../hooks/useAuth";
 // "TRAINER_ASSIGNED"
 
 // mockData
-const state: UserStatus = "TRAINER_ASSIGNED"; // 바꿔가면서 테스트
+const state: UserStatus = "UID_APPROVED"; // 바꿔가면서 테스트
+// 로그인한 계정의 status에 따라 바뀌도록 수정할 것 
 
 // mockData
 const mockUser = {
@@ -57,12 +59,20 @@ export default function MyPage() {
 	}, []);
 
 	return (
-		<div className="flex h-screen bg-white">
+		<div className="flex h-screen bg-white flex-col md:flex-row">
 			{/* 테스트용으로, 위의 mockData 바꿔서 볼 수 있는 컴포넌트입니다 */}
 			{/* <MyPageSidebar name={mockUser.name} email={mockUser.email} phone={mockUser.phone} /> */}
 
 			{/* 로그인한 계정의 실제 status에 따른 컴포넌트입니다 */}
-			{userData && <MyPageSidebar name={userData.name} email={mockUser.email} phone={mockUser.phone} />}
+			{userData ? (
+				<MyPageSidebar
+					name={userData.name}
+					email={mockUser.email}
+					phone={mockUser.phone}
+				/>
+			) : (
+				<MyPageSidebarSkeleton /> // ✅ 로딩 중일 때
+			)}
 
 			{/* 테스트용으로, 위의 mockData 바꿔서 볼 수 있는 컴포넌트입니다 */}
 			<MyPageMain state={state} />

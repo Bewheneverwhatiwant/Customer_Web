@@ -85,20 +85,6 @@ export const mapDayFormData = (formData: any): FormData => {
 	// fd.append("entryPoint2", formData.entryPoint2 || new Date().toISOString());
 	fd.append("entryPoint2", "2025-09-28");
 	fd.append("tradingReview", formData.tradingReview || "string");
-	// preCourseFeedbackDetail JSON
-	// fd.append(
-	// 	"preCourseFeedbackDetail",
-	// 	JSON.stringify({
-	// 		rnr: formData.rr || 0,
-	// 		operatingFundsRatio: formData.operatingFundsRatio || 0,
-	// 		entryPrice: formData.entryPrice || 0,
-	// 		exitPrice: formData.exitPrice || 0,
-	// 		settingStopLoss: formData.settingStopLoss || 0,
-	// 		settingTakeProfit: formData.settingTakeProfit || 0,
-	// 		positionStartReason: formData.positionStartReason || "",
-	// 		positionEndReason: formData.positionEndReason || "",
-	// 	})
-	// );
 
 	console.log("append 후 foam data:----------------");
 	fd.forEach((value, key) => console.log(key, value));
