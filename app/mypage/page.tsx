@@ -58,6 +58,8 @@ export default function MyPage() {
 		fetchUserInfo();
 	}, []);
 
+	// 25.09.29 dev 브랜치 분기점 
+
 	return (
 		<div className="flex h-screen bg-white flex-col md:flex-row">
 			{/* 테스트용으로, 위의 mockData 바꿔서 볼 수 있는 컴포넌트입니다 */}
