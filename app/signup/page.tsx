@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Image from 'next/image';
 import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
+// import { useSearchParams } from "next/navigation";
 
 import CustomInputField from "../components/CustomInputField";
 import CustomButton from "../components/CustomButton";
@@ -22,7 +22,7 @@ const investmentTypeMap: Record<string, string> = {
 	"스윙": "SWING",
 };
 
-export default function Signup() {
+export default function Signup({ searchParams }: any) {
 	const apiBaseUrl = process.env.NEXT_PUBLIC_SERVER_URI;
 	const router = useRouter();
 	const { signup } = useAuth();
@@ -158,8 +158,9 @@ export default function Signup() {
 		}
 	};
 
-	const searchParams = useSearchParams();
-	const social = searchParams.get("social");
+	// const searchParams = useSearchParams();
+	// const social = searchParams.get("social");
+	const social = searchParams?.social;
 
 	useEffect(() => {
 		// const urlParams = new URLSearchParams(window.location.search);
@@ -369,7 +370,7 @@ export default function Signup() {
 					</div>
 
 					{/* UID 입력 영역 */}
-					<div className="w-full flex flex-col items-end gap-2">
+					{/* <div className="w-full flex flex-col items-end gap-2">
 						<div className='w-full flex justify-start items-center gap-2'>
 							<p>UID 입력</p>
 							<CustomButton
@@ -412,7 +413,7 @@ export default function Signup() {
 						>
 							+ UID 추가 입력 (최대 5개)
 						</CustomButton>
-					</div>
+					</div> */}
 
 					<div className="w-full my-2">
 						<InvestmentTypeSelector
