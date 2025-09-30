@@ -59,7 +59,7 @@ const Home = () => {
       {/* 메인 콘텐츠 */}
       <div className="pt-16 flex-1 flex flex-col">
         {/* 탭 네비게이션 */}
-        <nav
+        {/* <nav
           className="flex justify-center gap-4 border-b border-gray-300 py-2 sticky top-16 bg-[#272727] z-10"
           role="navigation"
           aria-label="섹션 네비게이션"
@@ -78,13 +78,13 @@ const Home = () => {
               {tab}
             </button>
           ))}
-        </nav>
+        </nav> */}
 
         {/* 기업 소개. 3개의 컴포넌트 영역 */}
         <main className="flex flex-col w-full items-center">
           <section ref={sectionRefs.A} id="section-first" className="w-full relative">
             <Image
-              src="/images/tab_first_img.svg"
+              src="/images/sub_banner.png"
               alt="섹션 A 이미지"
               layout="responsive"
               width={1000}
@@ -93,7 +93,7 @@ const Home = () => {
             />
           </section>
 
-          <section id="section-a" className="w-[50%] relative">
+          {/* <section id="section-a" className="w-[50%] relative">
             <Image
               src="/images/tab_a_img_2.svg"
               alt="섹션 A 이미지"
@@ -124,7 +124,7 @@ const Home = () => {
               height={2740}
             // priority
             />
-          </section>
+          </section> */}
 
           <MainToast />
         </main>
