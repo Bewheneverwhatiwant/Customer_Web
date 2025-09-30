@@ -12,7 +12,11 @@ type TimeSlot = {
 	available: boolean;
 };
 
-export default function Reservation() {
+type ReservationProps = {
+	onClose: () => void;  // 부모가 내려줄 닫기 함수
+};
+
+export default function Reservation({ onClose }: ReservationProps) {
 	const router = useRouter();
 
 	const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -69,6 +73,14 @@ export default function Reservation() {
 						className="object-contain"
 					/>
 					<h3 className="text-2xl font-bold">상담 예약</h3>
+
+					{/* 닫기 버튼 */}
+					<button
+						onClick={onClose}
+						className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 cursor-pointer"
+					>
+						✕
+					</button>
 				</div>
 				<CustomDivider />
 

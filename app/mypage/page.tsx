@@ -61,7 +61,7 @@ export default function MyPage() {
 	// 25.09.29 dev 브랜치 분기점 
 
 	return (
-		<div className="flex h-screen bg-white flex-col md:flex-row">
+		<div className="flex bg-white flex-col md:flex-row h-auto md:h-screen">
 			{/* 테스트용으로, 위의 mockData 바꿔서 볼 수 있는 컴포넌트입니다 */}
 			{/* <MyPageSidebar name={mockUser.name} email={mockUser.email} phone={mockUser.phone} /> */}
 

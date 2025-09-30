@@ -50,6 +50,7 @@ export default function MyPageSidebar({ name, email, phone }: Props) {
 		bg-[#0f172a] text-white 
 		flex flex-col md:flex-col 
 		py-6 md:py-10
+		relative md:sticky md:top-0
 	"
 		>
 			{/* 모바일에서는 row, 데스크탑에서는 column */}

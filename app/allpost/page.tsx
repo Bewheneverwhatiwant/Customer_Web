@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { CustomDropdownButton } from "../components/CustomDropdown";
+import SubscribeModal from "../mypage/subscribeModal";
 
 interface Post {
 	id: number;
@@ -65,6 +66,7 @@ export default function AllPost() {
 	const router = useRouter();
 	const [selectedCategory, setSelectedCategory] = useState("전체 카테고리");
 	const [selectedTrainer, setSelectedTrainer] = useState("전체 트레이너");
+	const [isSubModalOpen, setIsSubModalOpen] = useState(false);
 
 	const categories = ["전체 카테고리", "주식", "채권", "ETF"];
 	const trainers = ["전체 트레이너", "트레이너 A", "트레이너 B", "트레이너 C"];
@@ -82,9 +84,16 @@ export default function AllPost() {
 				트레이딩 전문가의 칼럼을 읽어보세요.
 			</h1>
 
-			<button className="w-auto px-6 py-2 bg-gradient-to-r from-[#D2C693] to-[#928346] text-white font-medium rounded-md shadow text-sm sm:text-base mb-14">
+			<button className="w-auto px-6 py-2 bg-gradient-to-r from-[#D2C693] to-[#928346] text-white font-medium rounded-md shadow text-sm sm:text-base mb-14 cursor-pointer"
+				onClick={() => setIsSubModalOpen(true)}
+			>
 				구독하고 트레이닝 받아보기
 			</button>
+
+			<SubscribeModal
+				isOpen={isSubModalOpen}
+				onClose={() => setIsSubModalOpen(false)}
+			/>
 
 			{/* 필터 영역 */}
 			<div className="flex gap-3 w-full max-w-2xl justify-start">

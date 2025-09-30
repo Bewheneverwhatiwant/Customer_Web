@@ -117,7 +117,7 @@ export default function Login() {
 								onChange={setUserId}
 								variant={2}
 								required
-								autocomplete="username"
+								autoComplete="username"
 								aria-describedby="userId-help"
 							/>
 							<CustomInputField
@@ -129,7 +129,7 @@ export default function Login() {
 								variant={2}
 								type="password"
 								required
-								autocomplete="current-password"
+								autoComplete="current-password"
 								aria-describedby="password-help"
 							/>
 						</div>
