@@ -1,12 +1,8 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
 import MonthFeedback from "./MonthFeedback";
 
-export default function Page() {
-	const searchParams = useSearchParams();
-	const year = searchParams.get("year") || "2025";
-	const month = searchParams.get("month") || "8";
+export default function Page({ searchParams }: any) {
+	const year = searchParams?.year || "2025";
+	const month = searchParams?.month || "8";
 
 	const mockData = {
 		beforeMonth: `${year}년 ${parseInt(month) - 1}월`,

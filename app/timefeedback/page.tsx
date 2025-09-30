@@ -5,11 +5,13 @@ import BasicOrBeforeView from "./forms/BasicOrBeforeView";
 import DayAfterView from "./forms/DayAfterView";
 import SwingAfterView from "./forms/SwingAfterForm";
 import ScalpingAfterView from "./forms/ScalpingAfterView";
+import { mockUsers } from "../mocks/user";
 
 type TradeType = "SWING" | "DAY" | "SCALPING" | "BASIC";
 
 export default function Page() {
-	const Type: TradeType = "SWING"; // Type 은 유니온 타입 중 하나
+	// const Type: TradeType = "SWING"; // Type 은 유니온 타입 중 하나
+	const Type = mockUsers[1].investmentType;
 
 	return (
 		<div className="w-full p-6 mt-20 flex flex-col items-center">
@@ -25,7 +27,8 @@ export default function Page() {
 			{Type === "SWING" && <SwingAfterView />}
 			{Type === "DAY" && <DayAfterView />}
 			{Type === "SCALPING" && <ScalpingAfterView />}
-			{Type === "BASIC" && <BasicOrBeforeView />}
+
+			{Type === "SWING" && <BasicOrBeforeView />}
 		</div>
 	);
 }

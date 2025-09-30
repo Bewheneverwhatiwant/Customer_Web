@@ -20,7 +20,7 @@ import CustomLoading from "../components/CustomLoading";
 import CustomSkeleton from "../components/CustomSkeleton";
 
 import { CustomTable } from "../components/CustomTable";
-import { userData } from "../mocks/user"; // mockData
+
 import { User } from "../types/user"; // user type 
 import { TableColumn } from "../types/table"; // table type 
 
@@ -334,7 +334,7 @@ export default function Home() {
 				<CustomSkeleton variant="text" repeat={3} />
 
 				<p className="text-blue-300"> 10. CustomTable </p>
-				<CustomTable data={userData} columns={userColumns} />
+				{/* <CustomTable data={userData} columns={userColumns} /> */}
 
 			</div>
 		</div>
@@ -355,16 +355,16 @@ const userColumns: TableColumn<User>[] = [
 		header: '이메일',
 		accessorKey: 'email',
 	},
-	{
-		header: 'Actions',
-		cell: ({ row }) => (
-			<button
-				className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-				onClick={() => alert(`Editing user: ${row.original.id}`)}
-			>
-				Edit
-			</button>
-		),
-	},
+	// {
+	// 	header: 'Actions',
+	// 	cell: ({ row }) => (
+	// 		<button
+	// 			className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+	// 			onClick={() => alert(`Editing user: ${row.original.id}`)}
+	// 		>
+	// 			Edit
+	// 		</button>
+	// 	),
+	// },
 ];
 
