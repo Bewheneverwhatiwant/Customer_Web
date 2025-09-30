@@ -54,7 +54,7 @@ export default function MyPageMain({ state }: Props) {
 	};
 
 	return (
-		<main className="flex-1 p-10 overflow-y-auto max-h-screen">
+		<main className="flex-1 p-4 sm:p-6 md:p-10 overflow-visible md:overflow-y-auto md:max-h-screen">
 			<div className="max-w-2xl mx-auto text-center gap-5">
 				{renderMainContent()}
 

@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import ReviewSummary from "./ReviewSummary";
+import SubscribeModal from "../mypage/subscribeModal";
 
 // 리뷰 타입
 type Review = {
@@ -43,7 +44,8 @@ const RollingNumber = ({ value }: { value: number }) => {
 };
 
 export default function ReviewPage() {
-	// ✅ mockData
+	const [isSubModalOpen, setIsSubModalOpen] = useState(false);
+
 	const mockReviews: Review[] = [
 		{
 			id: 1,
@@ -137,9 +139,16 @@ export default function ReviewPage() {
 				</div>
 
 				{/* CTA 버튼 */}
-				<button className="w-full sm:w-auto bg-gradient-to-r from-[#D2C693] to-[#928346] text-white px-6 py-2 rounded-md font-medium">
+				<button className="w-full sm:w-auto bg-gradient-to-r from-[#D2C693] to-[#928346] text-white px-6 py-2 rounded-md font-medium cursor-pointer"
+					onClick={() => setIsSubModalOpen(true)}
+				>
 					구독하고 트레이닝 받으러 가기
 				</button>
+
+				<SubscribeModal
+					isOpen={isSubModalOpen}
+					onClose={() => setIsSubModalOpen(false)}
+				/>
 			</div>
 
 
